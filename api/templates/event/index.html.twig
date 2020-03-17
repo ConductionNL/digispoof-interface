@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <section class="row">
+        <div class="col-md-12">
+            <div class="content">
+
+
+                <header class="content__header">
+                    <h1 class="content__header-title">Events</h1>
+
+                </header>
+            </div>
+        </div>
+    </section>
+
+    <div class="row theme--small-padding">
+
+        <div class="col-md-8">
+
+            {% include 'widgets/list-broad-items.html.twig' with {'view':'app_event_view', 'items':events} %}
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="content-background background--donkerblauw">
+                <div class="content">
+                    <h2>Zoeken naar events </h2>
+                    <div class="input combobox" id="example_combobox">
+                        <input
+                            class="combobox__input input__control input__control--text input__control--xl input__control--select"
+                            id="autocomplete-kleur">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        System.import('/uno/components/form/combobox.js').then(function (module) {
+            let multipleComboBox = new module.Combobox(document.getElementById('multiple_combobox'), true);
+        });
+    </script>
+
+
+{% endblock %}

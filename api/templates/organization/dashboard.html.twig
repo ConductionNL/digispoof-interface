@@ -1,0 +1,129 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+<section class="row">
+    <div class="col-md-12">
+        <div class="content">
+            <header class="content__header">
+                <h1 class="content__header-title">Voor Organisaties</h1>
+            </header>
+        </div><!-- ./content -->
+    </div><!-- ./col -->
+</section>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Officia deserunt</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                    ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                    in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat
+                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <h2> Pitches</h2>
+        {% for d in 1..3 %}
+            <ul class="list list--card">
+                {% for i in 1..3 %}
+                    <li class="card">
+                        <a href="{{ path('app_pitch_view', { 'id': i }) }}" class="card__content">
+                            <div class="card__thumb" style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                            <div class="card__body">
+                                <span class="card__title">Pitch <span
+                                        class="label label--geel">Nog 12 dagen</span></span>
+                                <p>Dit is een super goed idee</p>
+                                <p>
+                                    <b>Deadline:</b> 12 April 2020
+                                    <b>Toegezegd:</b> &euro; 5.000,-
+                                    <b>Benodigd:</b> &euro; 25.000,-
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-4">
+
+        {% include'widgets/organization-menu.html.twig' %}
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background background--donkerblauw">
+            <div class="content">
+                <h2>Bijeenkomsten</h2>
+                <ul class="list list--links list--chevrons">
+                    <li>
+                        <a href="{{ path('app_event_view', { 'id': 1 }) }}"><b>12-3-2020 Amsterdam</b><br/>De staat van
+                            de stad</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_event_view', { 'id': 2 }) }}"><b>12-3-2020 Den Haag</b><br/>De staat van
+                            de stad</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_event_view', { 'id': 3 }) }}"><b>12-3-2020 Utrecht</b><br/>De staat van de
+                            stad</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_event_view', { 'id': 1 }) }}"><b>12-3-2020 Amsterdam</b><br/>De staat van
+                            de stad</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_event_view', { 'id': 2 }) }}"><b>12-3-2020 Den Haag</b><br/>De staat van
+                            de stad</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_event_view', { 'id': 3 }) }}"><b>12-3-2020 Utrecht</b><br/>De staat van de
+                            stad</a>
+                    </li>
+                </ul>
+            </div><!-- /.content -->
+        </div><!-- /.content-background -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <h2>Artikelen</h2>
+        <ul class="list list--card list--card-small">
+            {% for i in 1..5 %}
+                <li class="card card--small">
+                    <a href="{{ path('app_api_view', {'id':i}) }}" class="card__content">
+                        <div class="card__thumb"
+                             style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                        <div class="card__body"><span class="card__title">Artikel</span> Excepteur sint occaecat
+                            cupidatat
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div><!-- ./col -->
+
+
+    <script>
+        System.import('/uno/components/donut-chart/donut-chart.js').then(function (module) {
+            var donutChart = new module.DonutChart(document.getElementById('complicancy_donut-chart'));
+            donutChart.value = 80;
+            donutChart.draw();
+        });
+    </script>
+
+    {% endblock %}

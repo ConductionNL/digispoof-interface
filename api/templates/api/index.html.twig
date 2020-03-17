@@ -1,0 +1,117 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <section class="row">
+        <div class="col-md-12">
+            <div class="content">
+                <header class="content__header">
+                    <a class="backlink" href="{{ path("app_developer_dashboard") }}">Voor developers</a>
+                    <h1 class="content__header-title">API's</h1>
+                </header>
+            </div><!-- ./content -->
+        </div><!-- ./col -->
+
+    </section>
+
+    <div class="row theme--small-padding">
+        <div class="col-md-8">
+                    <ul class="list list--card list--card-small">
+                    {% for i in 1..10 %}
+                        <li class="card card--small">
+                            <a href="{{ path('app_api_view',{'id':i}) }}" class="card__content">
+                                <div class="card__thumb" style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                                <div class="card__body"><span class="card__title">API</span> Excepteur sint occaecat
+                                    cupidatat
+                                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                            </a>
+                        </li>
+                    </ul>
+                {% endfor %}
+
+        </div>
+
+
+
+        <div class="col-md-4">
+        
+            <h2>Filters</h2>
+        	<ul class="list list--filter list--filter-inline" id="closable-filter-list">
+    		</ul>
+    		
+    		<script>
+                var elements = [
+                    {
+                        "value": "Voorbereiden",
+                        "id": "filter-voorbereiden"
+                    },
+                    {
+                        "value": "Bekostiging bijzonder",
+                        "id": "filter-bekostiging-bijzonder"
+                    },
+                    {
+                        "value": "Studiefinanciering",
+                        "id": "filter-studiefinanciering"
+                    },
+                    {
+                        "value": "Basisbeurs",
+                        "id": "filter-Basisbeurs"
+                    },
+                    {
+                        "value": "Lesgeld",
+                        "id": "filter-lesgeld"
+                    },
+                ];
+                
+                System.import('/uno/components/list/filterlist.js').then(function (module) {
+                
+                    var filterList = new module.FilterList(document.getElementById('closable-filter-list'), elements);
+                });
+            </script>
+
+            <!-- Page Break -->
+            <div style="height: 20px;"></div>
+    
+            <div class="content-background background--donkerblauw">
+                <div class="content">
+                    <h2>Zoekterm toevoegen</h2>
+                    <form>
+                        <div class="input combobox" id="example_combobox">
+                            <input
+                                class="combobox__input input__control input__control--text input__control--xl input__control--select"
+                                id="autocomplete-kleur">
+                        </div>
+
+                        <div class="input">
+                            <button type="submit" class="btn btn--primary">Zoeken</button>
+                        </div>
+                    </form>
+                </div><!-- ./content -->
+            </div><!-- ./content-background -->
+
+            <!-- Page Break -->
+            <div style="height: 20px;"></div>
+            
+            <div class="content-background background--donkergeel">
+                <div class="content">
+                    <h2>Api aanmelden</h2>
+                    <form>
+                        <div class="input combobox" id="example_combobox">
+                            <input
+                                class="combobox__input input__control input__control--text input__control--xl input__control--select"
+                                id="autocomplete-kleur">
+                        </div>
+
+                        <div class="input">
+                            <button type="submit" class="btn btn--primary">Aanmelden</button>
+                        </div>
+                    </form>
+                </div><!-- ./content -->
+            </div><!-- ./content-background -->
+            
+        </div><!-- ./col -->
+
+    </div><!-- ./row -->
+
+
+{% endblock %}

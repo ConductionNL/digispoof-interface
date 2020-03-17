@@ -1,0 +1,184 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+<section class="row">
+    <div class="col-md-12">
+        <div class="content">
+            <header class="content__header">
+                <header class="content__header">
+
+                    <h1 class="content__header-title">Mijn developer</h1>
+                    <div class="notification notification--warning" id="my-notification">
+                        <div class="notification__content">
+                            <div class="notification__type">TER INFORMATIE</div>
+                            <h2 class="notification__title">Op zondag is een api offline vanwege onderhoud</h2>
+                                                    </div>
+                        <button class="notification__close-button" onclick="myNotification.close()">
+                            <i class="icon icon-cross"></i>
+                            Sluit
+                        </button>
+                    </div>
+                </header>
+            </header>
+        </div><!-- ./content -->
+    </div><!-- ./col -->
+</section>
+
+<div class="row theme--small-padding">
+
+    <div class="col-md-8">
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Beschrijving</h2>
+
+                <p>Labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                    in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat
+                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Mijn Repositories</h2>
+
+                {% include 'widgets/list-broad-items-small.html.twig' with{'view':'app_repository_view', 'items':repositories} %}
+
+            </div><!-- ./content-background -->
+        </div><!-- ./col -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Mijn Pitches</h2>
+
+                {% include 'widgets/list-broad-items-small.html.twig' with{'view':'app_pitch_view', 'items':pitches} %}
+
+            </div><!-- ./content-background -->
+        </div><!-- ./col -->
+        
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Mijn Evenementen</h2>
+
+                {% include 'widgets/list-broad-items-small.html.twig' with{'view':'app_event_view', 'items':events} %}
+
+            </div><!-- ./content-background -->
+        </div><!-- ./col -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background">
+            <div class="content">
+                <h2>Mijn Berichten</h2>
+
+                <blockquote class="quote ">
+                    <h4>Van John Doe</h4>
+                    Koffietje doen?<br>
+                    <span class="meta">– verstuurd op 10-2-2020 10:30</span>
+                </blockquote>
+
+                <blockquote class="quote ">
+                    <h4>Van John Doe</h4>
+                    Vergadering woensdag<br>
+                    <span class="meta">– verstuurd op 10-2-2020 10:30</span>
+                </blockquote>
+
+                <blockquote class="quote ">
+                    <h4>Van John Doe</h4>
+                    Afspraak annuleren<br>
+                    <span class="meta">– verstuurd op 10-2-2020 10:30</span>
+                </blockquote>
+
+                <h3>Bericht versturen</h3>
+                <form>
+                    <div class="input">
+                        <label class="input__label" for="name">Naam</label>
+                        <input type="text"
+                               class="input__control input__control--text input__control--large">
+                    </div>
+
+                    <div class="input">
+                        <label class="input__label" for="name">E-mail</label>
+                        <input type="text"
+                               class="input__control input__control--text input__control--large">
+                    </div>
+
+                    <div class="input">
+                        <label class="input__label" for="textarea_voorbeeld">Inhoud</label>
+                        <textarea id="textarea_voorbeeld"
+                                  class="input__control input__control--large input__control--text"></textarea>
+                    </div>
+
+                    <div class="input">
+                        <button type="submit" class="btn btn--primary">Verstuur</button>
+                    </div>
+                </form>
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background">
+            <div class="content">
+                <h2>Mijn Geschreven Reviews</h2>
+
+                <blockquote class="quote">
+                    <h4>API2</h4>
+                    Zeer duidelijke documentatie<br>
+                    <span class="meta">– geschreven op 10-2-2020 10:30</span>
+                </blockquote>
+
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+
+    </div><!-- ./col -->
+
+    <div class="col-md-4">
+
+        {% include'widgets/developer-menu.html.twig' %}        
+        
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+        
+        {% include'widgets/api-keys.html.twig' %}
+    </div>
+
+    <script>
+        System.import('/uno/components/donut-chart/donut-chart.js').then(function (module) {
+            var donutChart = new module.DonutChart(document.getElementById('complicancy_donut-chart'));
+            donutChart.value = 80;
+            donutChart.draw();
+        });
+    </script>
+
+    <script>
+        let myNotification;
+
+        System.import('/uno/components/notification/notification.js').then(function (module) {
+            myNotification = new module.Notification(document.getElementById('my-notification'));
+        });
+    </script>
+
+
+
+
+    {% endblock %}

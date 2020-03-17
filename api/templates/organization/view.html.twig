@@ -1,0 +1,122 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <section class="row">
+        <div class="col-md-12">
+            <div class="content">
+                <header class="content__header">
+                    <a class="backlink" href="{{ path('app_organization_index') }}">Organisaties</a>
+                    <header class="content__header">
+                        <h1 class="content__header-title">Over deze organisatie</h1>
+                    </header>
+                </header>
+            </div><!-- ./content -->
+        </div><!-- ./col -->
+    </section>
+
+    <div class="row theme--small-padding">
+
+        <div class="col-md-8">
+
+            <div class="content-background">
+                <div class="content">
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h1>Organisatie</h1>
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut
+                                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                ullamco
+                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                                in
+                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                        <div class="col-md-5">
+                            <img src="https://picsum.photos/id/1/200" class="responsive" width="100%">
+                        </div>
+                    </div>
+                </div><!-- ./content -->
+            </div><!-- ./content-background -->
+
+            <!-- Page Break -->
+            <div style="height: 20px"></div>
+
+            <div class="content-background">
+                <div class="content">
+
+                    <h2>Officia deserunt</h2>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                        cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                    <div class="donut-chart" id="complicancy-donut-chart">
+                        <h3 class="donut-chart__title">Complicancy</h3>
+                        <div class="donut-chart__chart">
+                            <canvas class="donut-chart__canvas"></canvas>
+                            <div class="donut-chart__inner">€ 2.000,00</div>
+                        </div>
+                        <span class="donut-chart__subtitle">over van € 10.000,00</span>
+                    </div>
+                </div><!-- ./content -->
+            </div><!-- ./content-background -->
+        </div>
+
+        <div class="col-md-4">
+
+            {% include'widgets/organization-menu.html.twig' %}
+
+            <!-- Page Break -->
+            <div style="height: 20px"></div>
+
+            <div class="content-background background--donkerblauw">
+                <div class="content">
+                    
+                    <h2>Stel een vraag</h2>
+                    <form>
+                        <div class="input">
+                            <label class="input__label" for="name">Naam</label>
+                            <input type="text"
+                                   class="input__control input__control--text input__control--large">
+                        </div>
+                        <div class="input">
+                            <label class="input__label" for="name">E-mail</label>
+                            <input type="text"
+                                   class="input__control input__control--text input__control--large">
+                        </div>
+
+                        <div class="input">
+                            <label class="input__label" for="textarea_voorbeeld">Vraag</label>
+                            <textarea id="textarea_voorbeeld"
+                                      class="input__control input__control--large input__control--text"></textarea>
+                        </div>
+
+                        <div class="input">
+                            <button type="submit" class="btn btn--primary">Verstuur</button>
+                        </div>
+                    </form>
+
+                </div><!-- ./content -->
+            </div><!-- ./content-background -->
+        </div><!-- ./col -->
+
+    </div><!-- ./row -->
+
+    <script>
+        System.import('/uno/components/donut-chart/donut-chart.js').then(function (module) {
+            var donutChart = new module.DonutChart(document.getElementById('complicancy_donut-chart'));
+            donutChart.value = 80;
+            donutChart.draw();
+        });
+    </script>
+
+{% endblock %}

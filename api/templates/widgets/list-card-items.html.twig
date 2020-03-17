@@ -1,0 +1,35 @@
+<ul class="list list--card">
+
+    {% set i = 0 %}
+
+    {% for item in items %}
+    {% set i = i + 1 %}
+
+    <li class="card">
+        <a href="{{ path('app_challenge_view', { 'id': item.id }) }}" class="card__content">
+            <div class="card__thumb"
+                 style="background-image: url('https://picsum.photos/id/1/200')"></div>
+            <div class="card__body">
+                                    <span class="card__title">{{ item.name }}<span
+                                            class="label label--geel">Nog 27 dagen</span></span>
+                <p>{{ item.description }}</p>
+                <p>
+                    <b>Deadline:</b> 12 April 2020
+                    <b>Pilot budget:</b> &euro; 25.000,-
+                </p>
+            </div>
+        </a>
+    </li>
+
+    {% if i == 3 or i == 6 %}
+</ul>
+
+<ul class="list list--card">
+
+    {% endif %}
+
+    {% endfor %}
+
+</ul>
+
+

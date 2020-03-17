@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+<section class="row">
+    <div class="col-md-8 col-md-offset-4">
+        <div class="content">
+            <header class="content__header">
+                <header class="content__header">
+                    <h1 class="content__header-title">Overzicht</h1>
+                </header>
+            </header>
+        </div><!-- ./content -->
+    </div><!-- ./col -->
+</section>
+
+<div class="row">
+    <aside class="col-md-4">
+        <nav class="sidenav">
+        	<ul>
+				<li class="sidenav__item ">
+    				<a href="#">
+						Introductie
+					</a>
+				</li>
+				<li class="sidenav__item ">
+					<a href="#">
+						Docker
+					</a>
+				</li>
+				<li class="sidenav__item ">
+					<a href="#">
+						Kubernetes
+					</a>
+				</li>
+				<li class="sidenav__item ">
+					<a href="#">
+						Componenten
+					</a>
+				</li>
+				<li class="sidenav__item ">
+					<a href="#">
+						Apis
+					</a>
+				</li>
+                                    
+                                    
+			</ul>
+		</nav>
+    </aside><!-- ./col -->
+
+    <div class="col-md-8">
+        <div class="content-background">
+            <div class="content"><p>De componenten zijn optionele onderdelen van de <span lang="en-US">library</span>. Probeer alleen
+    die componenten in te laden die ook daadwerkelijk gebruikt worden.</p>
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+    </div><!-- ./col -->
+</div><!-- ./row -->
+
+    <script>
+        System.import('/uno/components/donut-chart/donut-chart.js').then(function (module) {
+            var donutChart = new module.DonutChart(document.getElementById('complicancy_donut-chart'));
+            donutChart.value = 80;
+            donutChart.draw();
+        });
+    </script>
+
+    {% endblock %}

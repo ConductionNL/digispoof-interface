@@ -1,0 +1,156 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+<section class="row">
+    <div class="col-md-12">
+        <div class="content">
+            <header class="content__header">
+                <header class="content__header">
+                    <h1 class="content__header-title">Overzicht</h1>
+                </header>
+            </header>
+        </div><!-- ./content -->
+    </div><!-- ./col -->
+</section>
+
+<div class="row theme--small-padding">
+
+    <div class="col-md-8">
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Artikelen</h2>
+
+                <ul class="list list--card list--card-small">
+                    <li class="card card--small">
+                        <a href="{{ path('app_api_view',{'id':1}) }}" class="card__content">
+                            <div class="card__thumb"
+                                 style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                            <div class="card__body"><span class="card__title">Artikel</span> Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </div>
+                        </a>
+                    </li>
+                    <li class="card card--small">
+                        <a href="{{ path('app_api_view',{'id':1}) }}" class="card__content">
+                            <div class="card__thumb"
+                                 style="background-image: url('https://picsum.photos/200')"></div>
+                            <div class="card__body"><span class="card__title">Artikel</span> Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </div>
+                        </a>
+                    </li>
+                    <li class="card card--small">
+                        <a href="{{ path('app_api_view',{'id':1}) }}" class="card__content">
+                            <div class="card__thumb"
+                                 style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                            <div class="card__body"><span class="card__title">Artikel</span> Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+        <div class="content-background">
+            <div class="content">
+
+                <h2>Challenges</h2>
+
+                <ul class="list list--card list--card-small">
+                    <li class="card card--small">
+                        <a href="{{ path('app_challenge_view',{'id':1}) }}" class="card__content">
+                            <div class="card__thumb"
+                                 style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                            <div class="card__body"><span class="card__title">Challenge</span> Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </div>
+                        </a>
+                    </li>
+                    <li class="card card--small">
+                        <a href="{{ path('app_challenge_view',{'id':1}) }}" class="card__content">
+                            <div class="card__thumb"
+                                 style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                            <div class="card__body"><span class="card__title">Challenge</span> Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </div>
+                        </a>
+                    </li>
+                    <li class="card card--small">
+                        <a href="{{ path('app_challenge_view',{'id':1}) }}" class="card__content">
+                            <div class="card__thumb"
+                                 style="background-image: url('https://picsum.photos/id/1/200')"></div>
+                            <div class="card__body"><span class="card__title">Challenge</span> Excepteur sint occaecat
+                                cupidatat
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+            </div><!-- ./content -->
+        </div><!-- ./content-background -->
+
+        <!-- Page Break -->
+        <div style="height: 20px"></div>
+
+    </div><!-- ./col -->
+
+    <div class="col-md-4">
+
+        {% include'widgets/developer-menu.html.twig' %}
+
+            <!-- Page Break -->
+            <div style="height: 20px"></div>
+
+            <div class="content-background background--donkerblauw">
+                <div class="content">
+                    <h2>Bijeenkomsten</h2>
+                    <ul class="list list--links list--chevrons">
+                        <li>
+                            <a href="{{ path('app_event_view', { 'id': 1 }) }}"><b>12-3-2020 Amsterdam</b><br />De staat van de stad</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_event_view', { 'id': 2 }) }}"><b>12-3-2020 Den Haag</b><br />De staat van de stad</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_event_view', { 'id': 3 }) }}"><b>12-3-2020 Utrecht</b><br />De staat van de stad</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_event_view', { 'id': 1 }) }}"><b>12-3-2020 Amsterdam</b><br />De staat van de stad</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_event_view', { 'id': 2 }) }}"><b>12-3-2020 Den Haag</b><br />De staat van de stad</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_event_view', { 'id': 3 }) }}"><b>12-3-2020 Utrecht</b><br />De staat van de stad</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+
+     </div><!-- ./col -->
+    </div><!-- ./row -->
+
+    <script>
+        System.import('/uno/components/donut-chart/donut-chart.js').then(function (module) {
+            var donutChart = new module.DonutChart(document.getElementById('complicancy_donut-chart'));
+            donutChart.value = 80;
+            donutChart.draw();
+        });
+    </script>
+
+    {% endblock %}
