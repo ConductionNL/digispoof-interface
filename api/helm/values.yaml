@@ -5,19 +5,19 @@
 settings:
   registryBase: docker.io/conduction
   projectName: bzk-mock
-  name: bzk-mock
-  title: Developer | Nederland
+  name: digispoof-ui
+  title: Digispoof
   version: V.0.1
   description: '&#039;Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.&#039;'
-  repro: 'https://github.com/ConductionNL/bzk-mock'
-  domain: developer.conduction.nl  
+  repro: 'https://github.com/ConductionNL/digispoof-mock'
+  domain: digispoof.conduction.nl  
   organisationName: Conduction
   email: info@conduction.nl
   country: Netherlands
   state: Noord-Holland
   locality: Amsterdam
   unit: Common-Ground  
-  demo: developer.conduction.nl
+  demo: digispoof.conduction.nl
   env: dev
   debug: 1
   replicaCount: 1
