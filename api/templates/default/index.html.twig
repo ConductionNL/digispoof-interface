@@ -21,7 +21,7 @@
                     <form action="{{ responceUrl }}" method="post">                           
                         <div class="input">
                             <label class="input__label" for="color">Persoon</label>
-                            <select id="color" class="input__control input__control--m input__control--select ">
+                            <select id="bsn" name="bsn" class="input__control input__control--m input__control--select ">
                                 {% for persoon in people %}
 								<option value="{{ persoon.burgerservicenummer  }}">{{ persoon.naam.voornamen }} {{ persoon.naam.geslachtsnaam }}</option>
 								{% endfor %}
