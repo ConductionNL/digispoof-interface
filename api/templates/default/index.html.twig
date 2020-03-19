@@ -5,99 +5,54 @@
 
     <div class="row">
         <div class="col-md-8">
+        
+              <div class="notification notification--error">
+                <div class="notification__content">
+                  <div class="notification__type">Let op!</div>
+                  <h2 class="notification__title">Dit is geen echt DigiD formulier</h2>
+                  <span>Dit formulier is uitsluitend bedoeld voor test doeleinden en zet geen bestaande persoons gegevens door</span>
+                </div>
+              </div>
 
-            <div class="content-background" style="background-image: url('https://picsum.photos/id/1/860/300'); height: 300px;">
+            <div class="content-background">
             	<div class="content">
+            		<h2>Kies een persona</h2>
+            		
+                    <form action="{{ responceUrl }}" method="post">                           
+                        <div class="input">
+                            <label class="input__label" for="color">Persoon</label>
+                            <select id="color" class="input__control input__control--m input__control--select ">
+                                {% for persoon in people %}
+								<option value="{{ persoon.burgerservicenummer  }}">{{ persoon.naam.voornamen }} {{ persoon.naam.geslachtsnaam }}</option>
+								{% endfor %}
+                            </select>
+                        </div>             
+						
+						<input type="hidden" name="responce_url" value="{{ responceUrl }}">
+						<input type="hidden" name="token" value="{{ token }}">
+                        
+                        <button class="btn" type="submit">Inloggen</button> 
+                        
+                   </form>
 
                 </div><!-- /.content -->
             </div><!-- /.content-background -->
         </div><!-- /.col -->
-
-        <div class="col-md-4">
-            <div class="content-background background--donkerblauw" style="height: 300px;">
-                <div class="content">
-                    <h2>Bijeenkomsten</h2>
-                    <ul class="list list--links list--chevrons">
-                        <li>
-                            <a href="{{ path('app_event_view', { 'id': 1 }) }}"><b>12-3-2020 Amsterdam</b><br />De staat van de stad</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_event_view', { 'id': 2 }) }}"><b>12-3-2020 Den Haag</b><br />De staat van de stad</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_event_view', { 'id': 3 }) }}"><b>12-3-2020 Utrecht</b><br />De staat van de stad</a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
-            
-            <!-- 
-            <div class="content-background background--geel">
-                <div class="content">
-                    <button class="btn btn--primary">Primaire knop</button>
-                </div>
-            </div>
-            
-            
-            <div class="content-background background--donkergeel">
-                <div class="content">
-                	<button class="btn btn--primary">Primaire knop</button>
-
-                </div>
-            </div>
-            -->
-        </div>
-    </div>
-
-<div class="row">
-        <div class="col-md-12">
-            <h2> Uitgelicht</h2>
-            <ul class="list list--card">
-                <li class="card">
-                    <a href="{{ path('app_challenge_index') }}" class="card__content">
-                        <div class="card__thumb" style="background-image: url('https://picsum.photos/id/1/200')"></div>
-                        <div class="card__body">
-                            <span class="card__title">Challenges</span>
-                            Bekijk challanges en beloningen vanuit de overheid
-                        </div>
-                    </a>
-                </li>
-                <li class="card">
-                    <a href="{{ path('app_pitch_index') }}" class="card__content">
-                        <div class="card__thumb" style="background-image: url('https://picsum.photos/id/1/200')"></div>
-                        <div class="card__body">
-                        	<span class="card__title">Pitches</span>
-                        	Bekijk goede ideën vanuit de community
-                        </div>
-                    </a>
-                </li>
-                <li class="card">
-                    <a href="{{ path('app_news_index') }}" class="card__content">
-                        <div class="card__thumb" style="background-image: url('https://picsum.photos/id/1/200')"></div>
-                        <div class="card__body">
-                        	<span class="card__title">Nieuws</span>
-                        	Volg het laatste nieuws
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
         
-    <script>
-        /* Load collapse component */
-        System.import('/uno/components/collapse/collapse.js').then(function (module) {
+        
+        <div class="col-md-4">
 
-            /* Select all collapsible elements on the page */
-            var elements = document.querySelectorAll('main [x-uno-collapse]');
+            <div class="content-background" >
+            	<div class="content">
+            		<h2>Over dit formlier</h2>
+					<p>Dit formulier bied persona uit een mock-brp om mee in te loggen, na de inlog word een BSN  nummer terug geven aan de aanvragende applicatie.</p>
+					<p>Op deze manier is het mogelijk een DigiD inlog te &ldquo;spoofen&rdquo; voor ontwikkel doeleinden zonder een logius certificering aan te vragen</p>
+					<p>Dit component is open source beschikbaar als zowel git repository en docker container voorzien van helm charts voor kubernetes.</p>
+					<p>Bij het inrichten van component kan worden aangegeven wel mock-brp moet worden gebruikt, dat kan zowel een ander component op de kubernetes cluster als een externe service zijn.</p>
+                </div><!-- /.content -->
+            </div><!-- /.content-background -->
+        </div><!-- /.col -->
+	</div><!-- /.row -->
 
-            /* Initialize all collapses */
-            for (var i = 0; i < elements.length; i++) {
-                new module.Collapse(elements.item(i));
-            }
-        });
-
-    </script>
-
+        
 {% endblock %}
