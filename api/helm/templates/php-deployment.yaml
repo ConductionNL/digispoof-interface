@@ -72,16 +72,47 @@ spec:
                 configMapKeyRef:
                   name: {{ template "fullname" . }}
                   key: debug
+            - name: APP_TYPE
+              valueFrom:
+                  configMapKeyRef:
+                      name: {{ template "fullname" . }}
+                      key: app-type
+            - name: APP_ID
+              valueFrom:
+                    configMapKeyRef:
+                        name: {{ template "fullname" . }}
+                        key: app-id
             - name: APP_DEMO
               valueFrom:
                 configMapKeyRef:
                   name: {{ template "fullname" . }}
                   key: app-demo
-            - name: APP_DOMAIN
+            - name: APP_DOMAINS
               valueFrom:
                 configMapKeyRef:
                   name: {{ template "fullname" . }}
-                  key: app-domain
+                  key: app-domains-json
+
+            - name: APP_REPRO
+              valueFrom:
+                  configMapKeyRef:
+                      name: {{ template "fullname" . }}
+                      key: app-repro
+            - name: APP_CONTAINER
+              valueFrom:
+                  configMapKeyRef:
+                      name: {{ template "fullname" . }}
+                      key: app-container
+            - name: APP_DOMAIN
+              valueFrom:
+                  configMapKeyRef:
+                      name: {{ template "fullname" . }}
+                      key: app-domain
+            - name: APP_CASH
+              valueFrom:
+                  configMapKeyRef:
+                      name: {{ template "fullname" . }}
+                      key: cache      
             # organization
             - name: ORGANIZATION_NAME
               valueFrom:
@@ -173,6 +204,26 @@ spec:
                 secretKeyRef:
                   name: {{ template "fullname" . }}
                   key: mercure-jwt-secret
+            - name: APP_COMMONGROUND_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: app_commonground_id
+            - name: APP_COMMONGROUND_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: app_commonground_key
+            - name: APP_APPLICATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: app_application_key
+            - name: APP_USER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: app_user_key
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}
