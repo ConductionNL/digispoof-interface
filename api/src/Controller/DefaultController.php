@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Service\CommonGroundService;
+use Conduction\CommonGroundBundle\CommonGroundService;
 
 /**
  * Class DeveloperController
@@ -18,8 +18,8 @@ use App\Service\CommonGroundService;
  * @Route("/")
  */
 class DefaultController extends AbstractController
-{	
-	
+{
+
 	/**
 	 * @Route("/")
 	 * @Template
@@ -30,23 +30,17 @@ class DefaultController extends AbstractController
 		$responceUrl = $request->query->get('responceUrl');
 		$brpUrl = $request->query->get('brpUrl');
 		$url = $request->getHost();
-		
-		if(!$brpUrl){
-			$brpUrl = str_replace(['ds.','digispoof.'],'brp.',$url);
+
+		if($brpUrl){
+            $people = $commonGroundService->getResourceList($brpUrl);
 		}
-		
-		if($brpUrl == 'localhost'){
-			$brpUrl = "https://brp.dev.huwelijksplanner.online";
-		}
-		
-		$brpUrl = "https://brp.huwelijksplanner.online";
-		
-		$people = $commonGroundService->getResourceList($brpUrl.'/ingeschrevenpersonen');
-		
-		
+		else{
+            $people = $commonGroundService->getResourceList(['component'=>'brp','type'=>'ingeschrevenpersonen']);
+        }
+
 		return ['people'=>$people, 'responceUrl' => $responceUrl, 'token' => $token];
 	}
-	
+
 }
 
 

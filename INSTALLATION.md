@@ -31,6 +31,13 @@ The Tiller pod name begins with the prefix tiller-deploy-.
 
 Now that we've installed both Helm components, we're ready to use helm to install our first application.
 
+Or all in one go
+
+```CLI
+$ kubectl -n kube-system create serviceaccount tiller --kubeconfig="kubeconfig.yaml"
+$ kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller --kubeconfig="kubeconfig.yaml"
+$ helm init --service-account tiller --kubeconfig="kubeconfig.yaml"
+```
 
 ## Setting up ingress
 We need at least one nginx controller per kubernetes kluster, doh optionally we could set on up on a per namebase basis
@@ -102,26 +109,25 @@ First we always need to update our dependencies
 ```CLI
 $ helm dependency update ./api/helm
 ```
-
 If you want to create a new instance
 ```CLI
-$ helm install --name developer-dev ./api/helm  --kubeconfig="api/helm/kubeconfig.yaml" --namespace=dev  --set settings.env=dev,settings.debug=1
-$ helm install --name developer-stag ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" --namespace=stag --set settings.env=stag,settings.debug=0
-$ helm install --name developer-prod ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" --namespace=prod --set settings.env=prod,settings.debug=0
+$ helm install --name pc-dev ./api/helm  --kubeconfig="api/helm/kubeconfig-digi.yaml" --namespace=dev  --set settings.env=dev,settings.debug=1
+$ helm install --name pc-stag ./api/helm --kubeconfig="api/helm/kubeconfig-digi.yaml" --namespace=stag --set settings.env=stag,settings.debug=0
+$ helm install --name pc-prod ./api/helm --kubeconfig="api/helm/kubeconfig-digi.yaml" --namespace=prod --set settings.env=prod,settings.debug=0
 ```
 
 Or update if you want to update an existing one
 ```CLI
-$ helm upgrade developer-dev ./api/helm  --kubeconfig="api/helm/kubeconfig.yaml" --namespace=dev  --set settings.env=dev,settings.debug=1
-$ helm upgrade developer-stag ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" --namespace=stag --set settings.env=stag,settings.debug=0
-$ helm upgrade developer-prod ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" --namespace=prod --set settings.env=prod,settings.debug=0
+$ helm upgrade pc-dev ./api/helm  --kubeconfig="api/helm/kubeconfig-digi.yaml" --namespace=dev  --set settings.env=dev,settings.debug=1
+$ helm upgrade pc-stag ./api/helm --kubeconfig="api/helm/kubeconfig-digi.yaml" --namespace=stag --set settings.env=stag,settings.debug=0
+$ helm upgrade pc-prod ./api/helm --kubeconfig="api/helm/kubeconfig-digi.yaml" --namespace=prod --set settings.env=prod,settings.debug=0
 ```
 
 Or del if you want to delete an existing  one
 ```CLI
-$ helm del developer-dev  --purge --kubeconfig="api/helm/kubeconfig.yaml"
-$ helm del developer-stag --purge --kubeconfig="api/helm/kubeconfig.yaml"  
-$ helm del developer-prod --purge --kubeconfig="api/helm/kubeconfig.yaml"  
+$ helm del pc-dev  --purge --kubeconfig="api/helm/kubeconfig-digi.yaml" 
+$ helm del pc-stag --purge --kubeconfig="api/helm/kubeconfig-digi.yaml" 
+$ helm del pc-prod --purge --kubeconfig="api/helm/kubeconfig-digi.yaml" 
 ```
 
 Note that you can replace common ground with the namespace that you want to use (normally the name of your component).
