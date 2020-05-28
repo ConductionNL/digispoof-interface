@@ -3,18 +3,22 @@ security:
     providers:
         chain_provider:
             chain:
-                providers: [CommongroundUserProvider]
+                providers: [CommongroundApplicationProvider, CommongroundUserProvider]
+        commongroundApplicationProvider:
+            id: Conduction\CommonGroundBundle\Security\User\CommongroundApplicationProvider
         commongroundUserProvider:
             id: Conduction\CommonGroundBundle\Security\User\CommongroundUserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js|docs)/
             security: false
-        # The mollie webhook does not have our API key
-        webhook:
+        # In order to read the docs we must allow anonymous GET reqoust on root    
+        www:
+            pattern:  ^/
+            methods: [GET]
             anonymous: true
-            pattern: ^/payments/mollie_webhook
-            methods: [POST]
+        demo:
+            anonymous: true
         main:
             anonymous: ~
             form_login:
@@ -27,8 +31,9 @@ security:
             provider: commongroundUserProvider
             guard:
                 authenticators:
+                    - Conduction\CommonGroundBundle\Security\CommongroundApplicationAuthenticator
                     - Conduction\CommonGroundBundle\Security\CommongroundUserAuthenticator
-                entry_point: Conduction\CommonGroundBundle\Security\CommongroundUserAuthenticator
+                entry_point: Conduction\CommonGroundBundle\Security\CommongroundApplicationAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -39,10 +44,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/reminder, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(css|js), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(_wdt|_profiler), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_USER }
-        #- { path: ^/profile, roles: ROLE_USER }
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/profile, roles: ROLE_USER }
