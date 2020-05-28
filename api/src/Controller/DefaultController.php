@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-use Conduction\CommonGroundBundle\CommonGroundService;
+use Conduction\CommonGroundBundle\Service\CommonGroundService;
 
 /**
  * Class DeveloperController
