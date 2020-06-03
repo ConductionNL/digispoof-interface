@@ -10,17 +10,21 @@ settings:
   version: V.0.1
   id: 
   description: '&#039;Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.&#039;'
-  repro: 'https://github.com/ConductionNL/digispoof-interface'
-  domain: westfriesland.commonground.nu  
+  type: application
+  repro: https://github.com/ConductionNL/digispoof-interface
+  demo: digispoof.conduction.nl
+  container: 
+  domain: westfriesland.commonground.nu
+  subdomain: ds
   organisationName: Conduction
   email: info@conduction.nl
   country: Netherlands
   state: Noord-Holland
   locality: Amsterdam
-  unit: Common-Ground  
-  demo: digispoof.conduction.nl
+  unit: Common-Ground
   env: dev
   debug: 1
+  cache: 1
   replicaCount: 1
   corsAllowOrigin: ['*']
   trustedHosts: '^(.+\.)?conduction\.nl$|^(.+\.)?huwelijksplanner\.online$|^(.+\.)?larping\.eu$|^(.+\.)?common-ground\.dev$|^(.+\.)?trouwplanner\.online$|^(.+\.)?zaakonline\.nl$|localhost'
@@ -41,6 +45,14 @@ settings:
   healthEnabled: false
   archiveEnabled: false
 
+security:
+  commongroundId: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+  commongroundKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+  applicationKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+  userKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+  authorisationProviderUser: https://uc.conduction.nl
+  authorisationProviderApplication: https://uc.conduction.nl
+
 
 php:
   repository: docker.io/conduction/protocomponent-php
@@ -49,12 +61,13 @@ php:
     jwtSecret: ""
   env: prod
   secret: ""
+  replicaCount: 2
 
 nginx:
   repository: docker.io/conduction/protocomponent-nginx
   tag: latest
   pullPolicy: Always
-  replicaCount: 1
+  replicaCount: 2
 
 varnish:
   enabled: true
