@@ -13,7 +13,7 @@ settings:
   type: application
   repro: https://github.com/ConductionNL/digispoof-interface
   demo: digispoof.conduction.nl
-  container: 
+  container: https://hub.docker.com/repository/docker/conduction/digispoof-ui-php
   domain: westfriesland.commonground.nu
   subdomain: ds
   organisationName: Conduction

@@ -9,7 +9,7 @@ info:
     - Enviroment: dev
     - Version: V.0.1
     - Repository: [online](https://github.com/ConductionNL/digispoof-interface) / [zip](https://github.com/ConductionNL/digispoof-interface/archive/master.zip)
-    - Docker Image: [online]() 
+    - Docker Image: [online](https://hub.docker.com/repository/docker/conduction/digispoof-ui-php) 
     - Datamodel: [postman](/schema/digispoof-ui.postman_collection.json) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [modelio (zip)](/schema/Datamodel_Modelio.zip) 
     
     'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'         
@@ -2409,12 +2409,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-06-03 14:54:06'
+        example: '2020-06-03 15:18:33'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-06-03 14:54:06'
+        example: '2020-06-03 15:18:33'
     required: []
   AuditTrail-write:
     properties:
@@ -2462,12 +2462,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2020-06-03 14:54:06'
+        example: '2020-06-03 15:18:33'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2020-06-03 14:54:06'
+        example: '2020-06-03 15:18:33'
     required: []
   ChangeLog-write:
     properties:
