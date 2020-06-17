@@ -14,7 +14,7 @@ settings:
   repro: https://github.com/ConductionNL/digispoof-interface
   demo: digispoof.conduction.nl
   container: https://hub.docker.com/repository/docker/conduction/digispoof-ui-php
-  domain: dev
+  domain: westfriesland.commonground.nu
   subdomain: ds
   organisationName: Conduction
   email: info@conduction.nl
