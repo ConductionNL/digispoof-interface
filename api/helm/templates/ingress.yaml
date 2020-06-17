@@ -1,4 +1,3 @@
-{{ if or (eq .Values.settings.type "application") .Values.settings.web }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -28,13 +27,13 @@ spec:
                       serviceName: {{ $.Values.settings.name }}
                       servicePort: 80
     {{- else if eq $.Values.settings.env "prod" }}
-    - host: {{ $.Values.settings.domain }}
+    - host {{ $.Values.settings.domain }}
       http:
           paths:
             - backend:
                 serviceName: {{ $.Values.settings.name }}
                 servicePort: 80
-    - host: www.{{ $.Values.settings.domain }}
+    - host www.{{ $.Values.settings.domain }}
       http:
           paths:
             - backend:
@@ -48,4 +47,3 @@ spec:
                 serviceName: {{ $.Values.settings.name }}
                 servicePort: 80
     {{- end }}
-{{ end }}
