@@ -15,7 +15,7 @@ settings:
   demo: digispoof.conduction.nl
   container: https://hub.docker.com/repository/docker/conduction/digispoof-ui-php
   domain: westfriesland.commonground.nu
-  subdomain: ds
+  subdomain: digispoof-ui
   organisationName: Conduction
   email: info@conduction.nl
   country: Netherlands
