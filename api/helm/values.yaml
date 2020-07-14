@@ -12,7 +12,7 @@ settings:
   description: '&#039;Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.&#039;'
   type: application
   repro: https://github.com/ConductionNL/digispoof-interface
-  demo: digispoof.conduction.nl
+  demo: digispoof-ui.zuid-drecht.nl
   container: https://hub.docker.com/repository/docker/conduction/digispoof-ui-php
   domain: westfriesland.commonground.nu
   subdomain: digispoof-ui
