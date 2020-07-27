@@ -25,6 +25,7 @@ class DefaultController extends AbstractController
     {
         $token = $request->query->get('token');
         $responceUrl = $request->query->get('responceUrl');
+        $backUrl = $request->query->get('backUrl');
         $brpUrl = $request->query->get('brpUrl');
         $url = $request->getHost();
 
@@ -34,6 +35,6 @@ class DefaultController extends AbstractController
             $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen']);
         }
 
-        return ['people'=>$people, 'responceUrl' => $responceUrl, 'token' => $token];
+        return ['people'=>$people, 'responceUrl' => $responceUrl, 'backUrl' => $backUrl, 'token' => $token];
     }
 }
