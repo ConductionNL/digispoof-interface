@@ -30,6 +30,9 @@
 
 						<input type="hidden" name="responce_url" value="{{ responceUrl }}">
 						<input type="hidden" name="token" value="{{ token }}">
+                        {% if backUrl is defined and backUrl is not empty %}
+                            <input type="hidden" name="back_url" value="{{ backUrl }}">
+                        {% endif %}
 
                         <button class="btn" type="submit">Inloggen</button>
 
