@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "c84e3415-7ff3-4f39-813c-7bd0cc7874e2",
+		"name": "Digispoof Interface",
+		"description": "    API Details\n    - Component: Digispoof\n    - Reference: digispoof-ui\n    - Enviroment: dev\n    - Version: V.0.1\n    - Repository: [online](https://github.com/ConductionNL/digispoof-interface) / [zip](https://github.com/ConductionNL/digispoof-interface/archive/master.zip)\n    - Docker Image: [online](https://hub.docker.com/repository/docker/conduction/digispoof-ui-php) \n    - Datamodel: [postman](/schema/digispoof-ui.postman_collection.json) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [modelio (zip)](/schema/Datamodel_Modelio.zip) \n    \n    'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6038b7d1-1d15-4039-8cdb-79b439f694ac",
+						"exec": [
+							"// example using pm.response.to.have\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// example using response assertions\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"// example using pm.response.to.be*\r",
+							"pm.test(\"response must be valid and have a body\", function () {\r",
+							"     // assert that the status code is 200\r",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+							"     // assert that the response has a valid JSON body\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+							"});\r",
+							"pm.test(\"status must be 'pass'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    console.log(jsonData);\r",
+							"    //var payloadData = JSON.parse(jsonData.Payload); //parsed payload\r",
+							"\r",
+							"    //console.log(payloadData.Id);\r",
+							"    pm.expect(jsonData.status).to.equal('pass');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/health+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{authorization}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "bf4a34de-1479-46c1-8dff-d1d4e7072a60",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "89f8bdfb-eea9-4d78-b674-22306594245a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "4875f49e-7cd8-4f5b-88d0-f7441281fd44",
+			"key": "baseUrl",
+			"value": "https://ds.dev.zuid-drecht.nl"
+		},
+		{
+			"id": "947397d3-e966-416f-ad99-8c59bc4b5102",
+			"key": "authorization",
+			"value": "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
