@@ -32,7 +32,7 @@ class DefaultController extends AbstractController
         if ($brpUrl) {
             $people = $commonGroundService->getResourceList($brpUrl);
         } else {
-            $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen']);
+            $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
         }
 
         return ['people'=>$people, 'responceUrl' => $responceUrl, 'backUrl' => $backUrl, 'token' => $token];
