@@ -7,7 +7,8 @@ settings:
   projectName: digispoof-ui
   name: digispoof-ui
   title: Digispoof
-  version: V.0.1
+  version: V1.0
+  majorVersion: v1
   id: 
   description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
   type: application
@@ -15,7 +16,9 @@ settings:
   demo: digispoof-ui.zuid-drecht.nl
   container: https://hub.docker.com/repository/docker/conduction/digispoof-ui-php
   domain: zuid-drecht.nl
-  subdomain: digispoof-ui
+  subdomain: digispoof
+  subpath: digispoof
+  subpathRouting: true
   organisationName: Conduction
   email: info@conduction.nl
   country: Netherlands
@@ -50,8 +53,8 @@ security:
   commongroundKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
   applicationKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
   userKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
-  authorisationProviderUser: https://uc.conduction.nl
-  authorisationProviderApplication: https://uc.conduction.nl
+  authorisationProviderUser: https://uc.zuid-drecht.nl
+  authorisationProviderApplication: https://openzaak.dev.zuid-drecht.nl/authorizaties/api/v1
 
 
 php:
