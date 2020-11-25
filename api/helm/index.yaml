@@ -3,10 +3,10 @@ entries:
   digispoof-ui:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2020-11-25T14:32:15.2943572Z"
+    created: "2020-11-25T15:07:22.9191875Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: 881d0ba378c0b4d1b5b6902ccfeab76ed282dc1ae3cdc4eb19c2b8cd779ddd85
+    digest: 74cd9f1650556720f3b9b13f6dd2b7732efec1cb75c93fb8cc2b0a75d51c6932
     home: https://common-ground.dev
     icon: https://common-ground.dev/logo-250x250.png
     name: digispoof-ui
@@ -16,7 +16,7 @@ entries:
   postgresql:
   - apiVersion: v1
     appVersion: 11.7.0
-    created: "2020-11-25T14:32:15.3072684Z"
+    created: "2020-11-25T15:07:22.9313449Z"
     deprecated: true
     description: DEPRECATED Chart for PostgreSQL, an object-relational database management
       system (ORDBMS) with an emphasis on extensibility and on standards-compliance.
@@ -36,4 +36,4 @@ entries:
     urls:
     - charts/postgresql-8.6.4.tgz
     version: 8.6.4
-generated: "2020-11-25T14:32:15.2858703Z"
+generated: "2020-11-25T15:07:22.9106465Z"
