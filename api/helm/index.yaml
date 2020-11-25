@@ -3,14 +3,14 @@ entries:
   digispoof-ui:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2020-10-06T13:35:01.6586851Z"
+    created: "2020-11-25T14:05:52.5052395Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: a576a923e9a2c110ab28b3895f16aa2dff031a26ac696343acb0117658d7a2a1
+    digest: 881d0ba378c0b4d1b5b6902ccfeab76ed282dc1ae3cdc4eb19c2b8cd779ddd85
     home: https://common-ground.dev
     icon: https://common-ground.dev/logo-250x250.png
     name: digispoof-ui
     urls:
     - digispoof-ui-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-06T13:35:01.6560595Z"
+generated: "2020-11-25T14:05:52.4971548Z"

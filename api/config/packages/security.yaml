@@ -14,7 +14,6 @@ security:
             security: false
         # In order to read the docs we must allow anonymous GET reqoust on root    
         docs:
-            anonymous: true
             pattern:  (^/$|^/docs|^/docs/$|^/graphql/graphiql|^/graphql/graphiql/$|^/graphql/graphql_playground|^/graphql/graphql_playground/$)
             methods: [GET]
             anonymous: true
