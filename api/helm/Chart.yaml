@@ -3,8 +3,5 @@ appVersion: V1.0
 description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
 name: digispoof-ui
 version: 0.1.0
-dependencies:
-      version: 8.6.4
-      repository: https://kubernetes-charts.storage.googleapis.com/
-      condition: postgresql.enabled
-    - name: postgresql
+home: https://common-ground.dev
+icon: https://common-ground.dev/logo-250x250.png
