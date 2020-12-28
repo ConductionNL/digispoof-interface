@@ -25,6 +25,9 @@ Digispoof supports the following query parameters:
 > when provided it will also send back_url back to the provided responceUrl.
 > Which can then be used to redirect your user to the provided backUrl in your application.
 
+An example of what the url might be like:
+
+`https://zuid-drecht.nl/digispoof?responseUrl=https://zuid-drecht.nl/auth/digispoof&backUrl=https://zuid-drecht.nl/`
 
 
 More information about the BRP mock can be found [here](https://https://github.com/ConductionNL/brpservice).
