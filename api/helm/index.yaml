@@ -3,14 +3,37 @@ entries:
   digispoof-ui:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2020-10-06T13:35:01.6586851Z"
+    created: "2020-11-25T15:16:38.1848359Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: a576a923e9a2c110ab28b3895f16aa2dff031a26ac696343acb0117658d7a2a1
+    digest: a34aa826aaed6f5c97080ea492fcefffd287544c0257b1117ae2cd697f6f9944
     home: https://common-ground.dev
     icon: https://common-ground.dev/logo-250x250.png
     name: digispoof-ui
     urls:
     - digispoof-ui-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-06T13:35:01.6560595Z"
+  postgresql:
+  - apiVersion: v1
+    appVersion: 11.7.0
+    created: "2020-11-25T15:16:38.1988969Z"
+    deprecated: true
+    description: DEPRECATED Chart for PostgreSQL, an object-relational database management
+      system (ORDBMS) with an emphasis on extensibility and on standards-compliance.
+    digest: 00745b88e84403be696b7514c6e8c02710d81eb6074876b0700fa28fd47a9b43
+    home: https://www.postgresql.org/
+    icon: https://bitnami.com/assets/stacks/postgresql/img/postgresql-stack-110x117.png
+    keywords:
+    - postgresql
+    - postgres
+    - database
+    - sql
+    - replication
+    - cluster
+    name: postgresql
+    sources:
+    - https://github.com/bitnami/bitnami-docker-postgresql
+    urls:
+    - charts/postgresql-8.6.4.tgz
+    version: 8.6.4
+generated: "2020-11-25T15:16:38.1778376Z"

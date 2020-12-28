@@ -6,7 +6,7 @@ url: "https://github.com/ConductionNL/digispoof-interface"
 landingURL: "digispoof-ui.zuid-drecht.nl" 
 isBasedOn: "https://github.com/ConductionNL/Proto-component-commonground.git" 
 softwareVersion: "V1.0"
-releaseDate: "2020-06-10"
+releaseDate: "2020-25-11"
 logo: www.conduction.nl 
 monochromeLogo: img/logo-mono.svg
 
