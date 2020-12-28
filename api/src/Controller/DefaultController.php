@@ -24,7 +24,14 @@ class DefaultController extends AbstractController
     public function indexAction(Request $request, CommonGroundService $commonGroundService)
     {
         $token = $request->query->get('token');
-        $responceUrl = $request->query->get('responceUrl');
+
+        //responce is deprecated but still used in some applications so we still support it.
+        if ($request->query->get('responceUrl')) {
+            $responseUrl = $request->query->get('responceUrl');
+        } else {
+            $responseUrl = $request->query->get('responseUrl');
+        }
+
         $backUrl = $request->query->get('backUrl');
         $brpUrl = $request->query->get('brpUrl');
         $url = $request->getHost();
@@ -35,6 +42,6 @@ class DefaultController extends AbstractController
             $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
         }
 
-        return ['people'=>$people, 'responceUrl' => $responceUrl, 'backUrl' => $backUrl, 'token' => $token];
+        return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
     }
 }
