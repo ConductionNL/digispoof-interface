@@ -1,4 +1,4 @@
-# proto-component-commonground
+# digispoof-interface
 
 Description
 ----
