@@ -3,10 +3,10 @@ entries:
   digispoof-interface:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2021-03-02T07:28:23.8519815Z"
+    created: "2021-03-04T13:59:46.1715342Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: 442f051cf40f9a44c68a8d7650e8431cbe31e26c6b5d3a24a93f639581d73279
+    digest: 68e240c3063dac6b5be43d598a85907dd2d207516f2c80eb4dfe1fc80d1ccbf1
     home: https://www.conduction.nl
     icon: https://conductionnl.github.io/images/conduction_avatar_blue_on_transparant.svg
     keywords:
@@ -31,7 +31,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 11.10.0
-    created: "2021-03-02T07:28:23.871952Z"
+    created: "2021-03-04T13:59:46.1771576Z"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -60,4 +60,4 @@ entries:
     urls:
     - charts/postgresql-10.1.1.tgz
     version: 10.1.1
-generated: "2021-03-02T07:28:23.8321595Z"
+generated: "2021-03-04T13:59:46.1625029Z"

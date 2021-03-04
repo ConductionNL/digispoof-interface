@@ -11,11 +11,12 @@ settings:
   description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
   repro: https://github.com/ConductionNL/digispoof-interface
   demo: pc.zaakonline.nl
-  domain: conduction.nl
+  domain: zuid-drecht.nl
   subdomain: digispoof-interface
   subpath: digispoof
   subpathRouting: true
   env: dev
+  web: false
   debug: 1
   cache: false
   type: component
@@ -54,15 +55,14 @@ php:
 redis:
   cluster:
     enabled: false
-  enabled: false
   redisPort: 6379
   usePassword: false
-
+  enabled: false
 commonground:
   eherkenning:
-    location: https://conduction.nl/eherkenning
+    location: https://zuid-drecht.nl/eherkenning
   digispoof:
-    location: https://conduction.nl/digispoof
+    location: https://zuid-drecht.nl/digispoof
 
 nginx:
   repository: docker.io/conduction/protocomponent-nginx
