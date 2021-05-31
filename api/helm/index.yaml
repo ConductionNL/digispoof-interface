@@ -1,27 +1,45 @@
 apiVersion: v1
 entries:
-  digispoof-ui:
+  digispoof-interface:
   - apiVersion: v1
     appVersion: V1.0
-    created: "2020-11-25T15:16:38.1848359Z"
+    created: "2021-03-04T13:59:46.1715342Z"
     description: Naast deze JSON rest API is er ook een [graphql](/graphql) interface
       beschikbaar.
-    digest: a34aa826aaed6f5c97080ea492fcefffd287544c0257b1117ae2cd697f6f9944
-    home: https://common-ground.dev
-    icon: https://common-ground.dev/logo-250x250.png
-    name: digispoof-ui
+    digest: 68e240c3063dac6b5be43d598a85907dd2d207516f2c80eb4dfe1fc80d1ccbf1
+    home: https://www.conduction.nl
+    icon: https://conductionnl.github.io/images/conduction_avatar_blue_on_transparant.svg
+    keywords:
+    - commonground
+    - haven
+    - nlx
+    - component
+    maintainers:
+    - email: ruben@conduction.nl
+      name: Ruben van der Linde
+    - email: info@conduction.nl
+      name: Conduction
+    name: digispoof-interface
+    sources:
+    - https://commonground.conduction.nl/
+    - https://www.commonground.nl/
     urls:
-    - digispoof-ui-0.1.0.tgz
+    - digispoof-interface-0.1.0.tgz
     version: 0.1.0
   postgresql:
-  - apiVersion: v1
-    appVersion: 11.7.0
-    created: "2020-11-25T15:16:38.1988969Z"
-    deprecated: true
-    description: DEPRECATED Chart for PostgreSQL, an object-relational database management
-      system (ORDBMS) with an emphasis on extensibility and on standards-compliance.
-    digest: 00745b88e84403be696b7514c6e8c02710d81eb6074876b0700fa28fd47a9b43
-    home: https://www.postgresql.org/
+  - annotations:
+      category: Database
+    apiVersion: v2
+    appVersion: 11.10.0
+    created: "2021-03-04T13:59:46.1771576Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.x.x
+    description: Chart for PostgreSQL, an object-relational database management system
+      (ORDBMS) with an emphasis on extensibility and on standards-compliance.
+    digest: eebe8f456cf98d5927a35666d1d899174dc4d3e09f26788033f761527bc90749
+    home: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
     icon: https://bitnami.com/assets/stacks/postgresql/img/postgresql-stack-110x117.png
     keywords:
     - postgresql
@@ -30,10 +48,16 @@ entries:
     - sql
     - replication
     - cluster
+    maintainers:
+    - email: containers@bitnami.com
+      name: Bitnami
+    - email: cedric@desaintmartin.fr
+      name: desaintmartin
     name: postgresql
     sources:
     - https://github.com/bitnami/bitnami-docker-postgresql
+    - https://www.postgresql.org/
     urls:
-    - charts/postgresql-8.6.4.tgz
-    version: 8.6.4
-generated: "2020-11-25T15:16:38.1778376Z"
+    - charts/postgresql-10.1.1.tgz
+    version: 10.1.1
+generated: "2021-03-04T13:59:46.1625029Z"

@@ -4,30 +4,23 @@
 
 settings:
   registryBase: docker.io/conduction
-  projectName: digispoof-ui
-  name: digispoof-ui
-  title: Digispoof
+  projectName: digispoof-interface
+  name: digispoof-interface
   version: V1.0
   majorVersion: v1
-  id: 
   description: 'Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.'
-  type: application
   repro: https://github.com/ConductionNL/digispoof-interface
-  demo: digispoof-ui.zuid-drecht.nl
-  container: https://hub.docker.com/repository/docker/conduction/digispoof-ui-php
+  demo: pc.zaakonline.nl
   domain: zuid-drecht.nl
-  subdomain: digispoof
+  subdomain: digispoof-interface
   subpath: digispoof
   subpathRouting: true
-  organisationName: Conduction
-  email: info@conduction.nl
-  country: Netherlands
-  state: Noord-Holland
-  locality: Amsterdam
-  unit: Common-Ground
   env: dev
+  web: false
   debug: 1
-  cache: 1
+  cache: false
+  type: component
+  id: 
   replicaCount: 1
   corsAllowOrigin: ['*']
   trustedHosts: '^.+$'
@@ -37,11 +30,9 @@ settings:
     - 10.0.0.0/8
     - 172.16.0.0/12
     - 192.168.0.0/16
-  # If you are runnig a single component on a kubernetes cluster you can just easaliy enable the load balancer, if not you need to set up a multi component load balancer
+  # If you are running a single component on a kubernetes cluster you can just easily enable the load balancer, if not you need to set up a multi component load balancer
   loadbalancerEnabled: false
-  # If you want to enable NLX you are requered to add the appropreate certificates to you nlx-settings folder (located in the /api folder)
-  nlxInwayEnabled: false
-  # If you are runnig a single component on a kubernetes cluster you can just easaliy enable the load balancer, if not you need to set up a multi component load balancer
+  # If you are running a single component on a kubernetes cluster you can just easily enable the load balancer, if not you need to set up a multi component load balancer
   notificationEnabled: false
   audittrailEnabled: false
   authorisationEnabled: false
@@ -49,12 +40,7 @@ settings:
   archiveEnabled: false
 
 security:
-  commongroundId: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
-  commongroundKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
   applicationKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
-  userKey: "45c1a4b6-59d3-4a6e-86bf-88a872f35845"
-  authorisationProviderUser: https://uc.zuid-drecht.nl
-  authorisationProviderApplication: https://openzaak.dev.zuid-drecht.nl/authorizaties/api/v1
 
 
 php:
@@ -65,6 +51,18 @@ php:
   env: prod
   secret: ""
   replicaCount: 2
+
+redis:
+  cluster:
+    enabled: false
+  redisPort: 6379
+  usePassword: false
+  enabled: false
+commonground:
+  eherkenning:
+    location: https://zuid-drecht.nl/eherkenning
+  digispoof:
+    location: https://zuid-drecht.nl/digispoof
 
 nginx:
   repository: docker.io/conduction/protocomponent-nginx

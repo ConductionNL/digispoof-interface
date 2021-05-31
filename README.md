@@ -49,6 +49,8 @@ An example of what the url might be like:
 
 More information about the BRP mock can be found [here](https://https://github.com/ConductionNL/brpservice).
 
+Additional Information
+----
 
 Tutorial
 ----
