@@ -36,7 +36,31 @@ class DefaultController extends AbstractController
         $brpUrl = $request->query->get('brpUrl');
         $url = $request->getHost();
 
-        if ($brpUrl) {
+        if ($brpUrl && $brpUrl == 'localhost') {
+            $people = [
+                [
+                    'burgerservicenummer'   => '900220806',
+                    'voornamen'             => 'testpersoon',
+                    'geslachtsnaam'         => '900220806',
+                ],                [
+                    'burgerservicenummer'   => '900220818',
+                    'voornamen'             => 'testpersoon',
+                    'geslachtsnaam'         => '900220818',
+                ],                [
+                    'burgerservicenummer'   => '900220831',
+                    'voornamen'             => 'testpersoon',
+                    'geslachtsnaam'         => '900220831',
+                ],                [
+                    'burgerservicenummer'   => '900220843',
+                    'voornamen'             => 'testpersoon',
+                    'geslachtsnaam'         => '900220843',
+                ],                [
+                    'burgerservicenummer'   => '900220855',
+                    'voornamen'             => 'testpersoon',
+                    'geslachtsnaam'         => '900220855',
+                ],
+            ];
+        } elseif($brpUrl) {
             $people = $commonGroundService->getResourceList($brpUrl);
         } else {
             $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
