@@ -40,24 +40,34 @@ class DefaultController extends AbstractController
             $people = [
                 [
                     'burgerservicenummer'   => '900220806',
-                    'voornamen'             => 'testpersoon',
-                    'geslachtsnaam'         => '900220806',
+                    'naam' => [
+                        'voornamen'             => 'testpersoon',
+                        'geslachtsnaam'         => '900220806',
+                        ],
                 ],                [
                     'burgerservicenummer'   => '900220818',
-                    'voornamen'             => 'testpersoon',
-                    'geslachtsnaam'         => '900220818',
+                    'naam' => [
+                        'voornamen'             => 'testpersoon',
+                        'geslachtsnaam'         => '900220818',
+                    ],
                 ],                [
                     'burgerservicenummer'   => '900220831',
-                    'voornamen'             => 'testpersoon',
-                    'geslachtsnaam'         => '900220831',
+                    'naam' => [
+                        'voornamen'             => 'testpersoon',
+                        'geslachtsnaam'         => '900220831',
+                    ],
                 ],                [
                     'burgerservicenummer'   => '900220843',
-                    'voornamen'             => 'testpersoon',
-                    'geslachtsnaam'         => '900220843',
+                    'naam' => [
+                        'voornamen'             => 'testpersoon',
+                        'geslachtsnaam'         => '900220843',
+                    ],
                 ],                [
                     'burgerservicenummer'   => '900220855',
-                    'voornamen'             => 'testpersoon',
-                    'geslachtsnaam'         => '900220855',
+                    'naam' => [
+                        'voornamen'             => 'testpersoon',
+                        'geslachtsnaam'         => '900220855',
+                    ],
                 ],
             ];
         } elseif($brpUrl) {
