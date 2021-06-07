@@ -44,25 +44,29 @@ class DefaultController extends AbstractController
 //                        'voornamen'             => 'testpersoon',
 //                        'geslachtsnaam'         => '900220806',
 //                        ],
-//                ],                [
+//                ],
+                [
                     'burgerservicenummer'   => '900220818',
                     'naam' => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220818',
                     ],
-                ],                [
+                ],
+                [
                     'burgerservicenummer'   => '900220831',
                     'naam' => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220831',
                     ],
-                ],                [
+                ],
+                [
                     'burgerservicenummer'   => '900220843',
                     'naam' => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220843',
                     ],
-                ],                [
+                ],
+                [
                     'burgerservicenummer'   => '900220855',
                     'naam' => [
                         'voornamen'             => 'testpersoon',
