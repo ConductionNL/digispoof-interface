@@ -38,13 +38,13 @@ class DefaultController extends AbstractController
 
         if ($brpUrl && $brpUrl == 'localhost') {
             $people = [
-                [
-                    'burgerservicenummer'   => '900220806',
-                    'naam' => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220806',
-                        ],
-                ],                [
+//                [
+//                    'burgerservicenummer'   => '900220806',
+//                    'naam' => [
+//                        'voornamen'             => 'testpersoon',
+//                        'geslachtsnaam'         => '900220806',
+//                        ],
+//                ],                [
                     'burgerservicenummer'   => '900220818',
                     'naam' => [
                         'voornamen'             => 'testpersoon',
