@@ -11,9 +11,8 @@ info:
     - Repository: [online](https://github.com/ConductionNL/digispoof-interface) / [zip](https://github.com/ConductionNL/digispoof-interface/archive/master.zip)
     - Docker Image: [online]() 
     - Datamodel: [postman](schema/digispoof-interface.postman_collection.json) / [oas](schema/openapi.yaml) / [pdf](schema/datamodel.pdf) / [modelio (zip)](schema/Datamodel_Modelio.zip) 
-    
+
     Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar.         
-    
 paths:
   /audit_trails:
     get:
@@ -2355,12 +2354,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2021-03-04 13:59:53'
+        example: '2021-06-23 09:54:11'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2021-03-04 13:59:53'
+        example: '2021-06-23 09:54:11'
     required: []
   ChangeLog-write:
     properties:
@@ -2474,12 +2473,12 @@ definitions:
         description: 'The moment this request was created'
         type: string
         format: date-time
-        example: '2021-03-04 13:59:53'
+        example: '2021-06-23 09:54:11'
       dateModified:
         description: 'The moment this request last Modified'
         type: string
         format: date-time
-        example: '2021-03-04 13:59:53'
+        example: '2021-06-23 09:54:11'
     required: []
   AuditTrail-write:
     properties:
@@ -2492,15 +2491,15 @@ definitions:
 tags:
   -
     name: ChangeLog
-    description: |
+    description: |-
       An resource representing a log line.
-      
+
       This entity represents a product that can be ordered via the OrderRegistratieComponent.
   -
     name: AuditTrail
-    description: |
+    description: |-
       An resource representing a log line.
-      
+
       This entity represents a product that can be ordered via the OrderRegistratieComponent.
 securityDefinitions:
   JWT-Oauth:
