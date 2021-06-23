@@ -38,43 +38,43 @@ class DefaultController extends AbstractController
 
         if ($brpUrl && $brpUrl == 'localhost') {
             $people = [
-//                [
-//                    'burgerservicenummer'   => '900220806',
-//                    'naam' => [
-//                        'voornamen'             => 'testpersoon',
-//                        'geslachtsnaam'         => '900220806',
-//                        ],
-//                ],
+                //                [
+                //                    'burgerservicenummer'   => '900220806',
+                //                    'naam' => [
+                //                        'voornamen'             => 'testpersoon',
+                //                        'geslachtsnaam'         => '900220806',
+                //                        ],
+                //                ],
                 [
                     'burgerservicenummer'   => '900220818',
-                    'naam' => [
+                    'naam'                  => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220818',
                     ],
                 ],
                 [
                     'burgerservicenummer'   => '900220831',
-                    'naam' => [
+                    'naam'                  => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220831',
                     ],
                 ],
                 [
                     'burgerservicenummer'   => '900220843',
-                    'naam' => [
+                    'naam'                  => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220843',
                     ],
                 ],
                 [
                     'burgerservicenummer'   => '900220855',
-                    'naam' => [
+                    'naam'                  => [
                         'voornamen'             => 'testpersoon',
                         'geslachtsnaam'         => '900220855',
                     ],
                 ],
             ];
-        } elseif($brpUrl) {
+        } elseif ($brpUrl) {
             $people = $commonGroundService->getResourceList($brpUrl);
         } else {
             $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
