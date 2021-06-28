@@ -18,7 +18,7 @@
             	<div class="content">
             		<h2>Kies een persona</h2>
 
-                    <form action="{{ responceUrl }}" method="post">
+                    <form action="{{ responseUrl }}" method="post">
                         <div class="input">
                             <label class="input__label" for="color">Persoon</label>
                             <select id="bsn" name="bsn" class="input__control input__control--m input__control--select ">
@@ -28,7 +28,7 @@
                             </select>
                         </div>
 
-						<input type="hidden" name="responce_url" value="{{ responceUrl }}">
+						<input type="hidden" name="response_url" value="{{ responseUrl }}">
 						<input type="hidden" name="token" value="{{ token }}">
                         {% if backUrl is defined and backUrl is not empty %}
                             <input type="hidden" name="back_url" value="{{ backUrl }}">
@@ -47,7 +47,7 @@
 
             <div class="content-background" >
             	<div class="content">
-            		<h2>Over dit formlier</h2>
+            		<h2>Over dit formulier</h2>
 					<p>Dit formulier biedt persona uit een mock-BRP om mee in te loggen, na de inlog word een BSN nummer teruggegeven aan de aanvragende applicatie.</p>
 					<p>Op deze manier is het mogelijk een DigiD inlog te &ldquo;spoofen&ldquo; voor ontwikkel doeleinden, zonder een Logius certificering aan te vragen</p>
 					<p>Dit component is open source beschikbaar als zowel git repository en docker container voorzien van helm charts voor kubernetes.</p>
