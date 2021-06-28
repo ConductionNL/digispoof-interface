@@ -13,8 +13,8 @@ export default function Template({ data, location }) {
 
   return (
     <Layout>
-      <SEO title="Agenda service" />
-      <Background backgroundColor="#CC0000">
+      <SEO title="Digispoof" />
+      <Background backgroundColor="#FFBC2C">
 
       <nav>
         <Container>

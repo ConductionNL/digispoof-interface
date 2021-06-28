@@ -22,8 +22,8 @@ import authorizationImage from '../images/undraw_two_factor_authentication_namy.
 
 const IndexPage = ({location}) => (
   <Layout>
-    <SEO title="Agenda service"/>
-    <Background backgroundColor="#CC0000">
+    <SEO title="Digispoof"/>
+    <Background backgroundColor="#FFBC2C">
       <Container>
         <Navigation as="nav" location={location}/>
         <Section>
@@ -31,7 +31,7 @@ const IndexPage = ({location}) => (
         </Section>
       </Container>
     </Background>
-    <Background backgroundColor="#2A5587">
+    <Background backgroundColor="#1A3E72">
       <Container>
         <Logos/>
       </Container>
@@ -96,7 +96,7 @@ const IndexPage = ({location}) => (
       </Section>
     </Container>
 
-    <Background backgroundColor="#2A5587">
+    <Background backgroundColor="#1A3E72">
       <Container>
         <Section>
           <Heading align="center" fontSize="2rem">Roadmap</Heading>
