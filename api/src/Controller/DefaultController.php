@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use App\Service\DigispoofService;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,7 @@ class DefaultController extends AbstractController
      * @Route("/")
      * @Template
      */
-    public function indexAction(Request $request, CommonGroundService $commonGroundService)
+    public function indexAction(Request $request, DigispoofService $digispoofService)
     {
         $token = $request->query->get('token');
 
@@ -33,53 +34,28 @@ class DefaultController extends AbstractController
         }
 
         $backUrl = $request->query->get('backUrl');
-        $brpUrl = $request->query->get('brpUrl');
-        $url = $request->getHost();
+        $type = $request->query->get('type');
 
-        if ($brpUrl && $brpUrl == 'localhost') {
-            $people = [
-                //                [
-                //                    'burgerservicenummer'   => '900220806',
-                //                    'naam' => [
-                //                        'voornamen'             => 'testpersoon',
-                //                        'geslachtsnaam'         => '900220806',
-                //                        ],
-                //                ],
-                [
-                    'burgerservicenummer'   => '900220818',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220818',
-                    ],
-                ],
-                [
-                    'burgerservicenummer'   => '900220831',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220831',
-                    ],
-                ],
-                [
-                    'burgerservicenummer'   => '900220843',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220843',
-                    ],
-                ],
-                [
-                    'burgerservicenummer'   => '900220855',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220855',
-                    ],
-                ],
-            ];
-        } elseif ($brpUrl) {
-            $people = $commonGroundService->getResourceList($brpUrl);
+        if ($type) {
+            switch ($type) {
+                case 'saml':
+                    $people = $digispoofService->getFromBRP();
+                    break;
+                case 'testset':
+                    $people = $digispoofService->testSet();
+                    break;
+                case 'brp':
+                    $people = $digispoofService->getFromBRP();
+                    break;
+                default:
+                    $people = $digispoofService->testSet();
+                    break;
+            }
         } else {
-            $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
+            $people = $digispoofService->testSet();
         }
 
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
     }
+
 }
