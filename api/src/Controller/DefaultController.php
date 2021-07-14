@@ -84,6 +84,7 @@ class DefaultController extends AbstractController
         if ($request->getContentType() !== 'xml') {
             throw new HttpException('500', 'Content is not of type: XML');
         }
+        var_dump($request->getContent());
         $xml = $digispoofService->handleArtifact($request->getContent());
 
         $response = new Response($xml);

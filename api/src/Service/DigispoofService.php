@@ -137,6 +137,7 @@ class DigispoofService
     public function handleArtifact(string $xml)
     {
         $xml = simplexml_load_string($xml);
+        var_dump($xml);
         $array = (array)$xml->children('http://schemas.xmlsoap.org/soap/envelope/')->children('urn:oasis:names:tc:SAML:2.0:protocol')->children('urn:oasis:names:tc:SAML:2.0:assertion');
 
         if (!isset($array['Artifact'])) {
