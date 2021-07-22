@@ -148,6 +148,18 @@ class DigispoofService
         return $this->buildArtifactResponse($bsn, $array['Artifact']);
     }
 
+    public function retrieveBsn(string $xml)
+    {
+        $xml = simplexml_load_string($xml);
+        $array = (array)$xml->children('http://schemas.xmlsoap.org/soap/envelope/')->children('urn:oasis:names:tc:SAML:2.0:protocol')->children('urn:oasis:names:tc:SAML:2.0:assertion');
+
+        if (!isset($array['Artifact'])) {
+            throw new HttpException('404', 'Artifact not found');
+        }
+
+        return $this->retrieveFromCache($array['Artifact']);
+    }
+
     public function buildArtifactResponse($bsn, $artifact)
     {
         $uuid = Uuid::uuid4();
