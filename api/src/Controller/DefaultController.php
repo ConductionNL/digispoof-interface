@@ -5,6 +5,8 @@
 namespace App\Controller;
 
 use App\Service\DigispoofService;
+use App\Exception\DigiDException;
+use App\Service\DigiDMockService;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +25,14 @@ class DefaultController extends AbstractController
     /**
      * @Route("/")
      * @Template
+     * @param Request $request
+     * @param CommonGroundService $commonGroundService
+     * @param DigiDMockService $digiDMockService
+     * @return array
      */
-    public function indexAction(Request $request, DigispoofService $digispoofService)
+    public function indexAction(Request $request, CommonGroundService $commonGroundService, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
     {
+
         $token = $request->query->get('token');
 
         //responce is deprecated but still used in some applications so we still support it.
@@ -38,21 +45,29 @@ class DefaultController extends AbstractController
         $backUrl = $request->query->get('backUrl');
         $type = $request->query->get('type');
 
-        if ($request->isMethod('POST') && $request->getContentType() == 'xml') {
-            $saml = $digispoofService->handlePostBinding($request->getContent());
-            $people = $digispoofService->testSet();
-            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
-        }
+//        if ($request->isMethod('POST') && $request->getContentType() == 'xml') {
+//            $saml = $digispoofService->handlePostBinding($request->getContent());
+//            $people = $digispoofService->testSet();
+//            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
+//        }
 
-        if ($request->query->has('SAMLRequest')) {
-            $saml = $digispoofService->handleRedirectBinding($request->query->get('SAMLRequest'));
+        if($request->query->has('SAMLRequest')){
+            $saml = $digiDMockService->handle($request);
+            foreach($saml['errors'] as $error){
+                $this->addFlash('warning', $error->getMessage());
+            }
             $people = $digispoofService->testSet();
             return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
         }
+//        if ($request->query->has('SAMLRequest')) {
+//            $saml = $digispoofService->handleRedirectBinding($request->query->get('SAMLRequest'));
+//            $people = $digispoofService->testSet();
+//            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
+//        }
 
         if ($request->isMethod('POST')) {
             $result = $request->request->all();
-            $artifact = $digispoofService->saveBsnToCache($result['bsn']);
+            $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
             return $this->redirect($result['endpoint'] . "?SAMLArt=${artifact}");
         }
 
@@ -72,19 +87,20 @@ class DefaultController extends AbstractController
             $people = $digispoofService->testSet();
         }
 
+
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
     }
 
     /**
      * @Route("/artifact", methods={"POST"})
      */
-    public function artifactAction(Request $request, DigispoofService $digispoofService)
+    public function artifactAction(Request $request, DigiDMockService $digiDMockService)
     {
 
         if ($request->getContentType() !== 'xml') {
             throw new HttpException('500', 'Content is not of type: XML');
         }
-        $xml = $digispoofService->handleArtifact($request->getContent());
+        $xml = $digiDMockService->handleArtifact($request->getContent());
 
         $response = new Response($xml);
 

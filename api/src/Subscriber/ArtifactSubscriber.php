@@ -1,7 +1,7 @@
 <?php
 namespace App\Subscriber;
 
-use App\Service\DigispoofService;
+use App\Service\DigiDMockService;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Cache\Adapter\AdapterInterface as CacheInterface;
 use ApiPlatform\Core\EventListener\EventPriorities;
@@ -28,13 +28,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ArtifactSubscriber implements EventSubscriberInterface
 {
     private $commonGroundService;
-    private $digispoofService;
+    private DigiDMockService $digiDMockService;
     private $params;
 
-    public function __construct(CommonGroundService $commonGroundService, DigispoofService $digispoofService, ParameterBagInterface $params)
+    public function __construct(CommonGroundService $commonGroundService, DigiDMockService $digiDMockService, ParameterBagInterface $params)
     {
         $this->commonGroundService = $commonGroundService;
-        $this->digispoofService = $digispoofService;
+        $this->digiDMockService = $digiDMockService;
         $this->params = $params;
     }
     public static function getSubscribedEvents()
@@ -60,7 +60,7 @@ class ArtifactSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $bsn = $this->digispoofService->retrieveBsn($event->getRequest()->getContent());
+        $bsn = $this->digiDMockService->retrieveBsn($event->getRequest()->getContent());
 
         $verwerkteSoortenGegevens = [
             'soortGegeven' => 'BSN'
