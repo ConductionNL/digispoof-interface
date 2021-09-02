@@ -302,6 +302,6 @@ class DigiDMockService
             throw new HttpException('404', 'Artifact not found');
         }
 
-        return $this->retrieveFromCache($array['Artifact']);
+        return $this->retrieveFromCache($array['soapenv:Body']['samlp:ArtifactResolve']['samlp:Artifact']);
     }
 }
