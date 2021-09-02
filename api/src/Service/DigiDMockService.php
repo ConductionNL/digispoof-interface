@@ -24,9 +24,9 @@ class DigiDMockService
         $this->cache = $cache;
     }
 
-    public function verifySignature(string $certificate, string $parameters): bool
+    public function verifySignature(string $certificate, string $parameters): array
     {
-        return true;
+        return [];
     }
 
     public function checkSaml(array $data): void
@@ -133,36 +133,74 @@ class DigiDMockService
 
     /**
      * @param array $data
-     * @throws DigiDException
      */
-    public function verifyAttributes(array $data): void
+    public function verifyAttributes(array $data): array
     {
+        $errors = [];
         try{
             $this->checkSaml($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkSamlp($data);
+        }
+        catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkId($data);
+        }
+        catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkVersion($data);
+        } catch (DigiDException $e) {
+            $errors[] = $e;
+        }
+        try{
             $this->checkDestination($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkProtocolBinding($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkConsumerService($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkIssuer($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkNameIdPolicy($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
             $this->checkRequestedAuthnContext($data);
         } catch (DigiDException $e){
-            throw $e;
+            $errors[] = $e;
         }
+        return $errors;
     }
 
     /**
      * @param array $data
      * @param string $parameters
-     * @return bool
-     * @throws DigiDException
+     * @return array
      */
-    public function verifyRequest(array $data, string $parameters): bool
+    public function verifyRequest(array $data, string $parameters): array
     {
 
-        return $this->verifyAttributes($data) && $this->verifySignature('', $parameters);
+        return array_merge($this->verifyAttributes($data), $this->verifySignature('', $parameters));
     }
 
 
@@ -195,12 +233,10 @@ class DigiDMockService
     {
         $errors = [];
         $samlRequest = $this->getSamlRequest($request);
-        try{
-            $this->verifyRequest($samlRequest, $request->getQueryString());
-        } catch(DigiDException $e){
-            if($this->parameterBag->get('debug'))
-                $errors[] = $e;
+        if($request->query->has('validatedigid') && $request->query->get('validatedigid')){
+            $errors = $this->verifyRequest($samlRequest, $request->getQueryString());
         }
+
         $saml = [
             'issuer' => $samlRequest['saml:Issuer'],
             'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
