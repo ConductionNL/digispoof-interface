@@ -5,6 +5,8 @@
 namespace App\Controller;
 
 use App\Service\DigispoofService;
+use App\Exception\DigiDException;
+use App\Service\DigiDMockService;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +25,22 @@ class DefaultController extends AbstractController
     /**
      * @Route("/")
      * @Template
+     * @param Request $request
+     * @param CommonGroundService $commonGroundService
+     * @param DigiDMockService $digiDMockService
+     * @return array
      */
-    public function indexAction(Request $request, DigispoofService $digispoofService)
+    public function indexAction(Request $request, CommonGroundService $commonGroundService, DigiDMockService $digiDMockService)
     {
+        if($request->query->has('SAMLRequest')){
+            try{
+                $digiDMockService->handle($request);
+            } catch(DigiDException $exception){
+                $this->addFlash('warning', $exception->getMessage());
+            }
+        }
+
+
         $token = $request->query->get('token');
 
         //responce is deprecated but still used in some applications so we still support it.
