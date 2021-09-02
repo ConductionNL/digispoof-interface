@@ -222,8 +222,8 @@ class DigiDMockService
         $artifact = preg_replace("/\s+/", "", $artifact);
 
         $message = [
-            '@xmlns:SOAP-ENV' => 'http://schemas.xmlsoap.org/soap/envelope/',
-            'SOAP-ENV:Body' => [
+            '@xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/',
+            'soapenv:Body' => [
                 'samlp:ArtifactResponse' => [
                     '@xmlns:samlp' => "urn:oasis:names:tc:SAML:2.0:protocol",
                     '@xmlns:saml' => "urn:oasis:names:tc:SAML:2.0:assertion",
