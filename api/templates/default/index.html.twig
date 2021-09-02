@@ -20,6 +20,9 @@
                     {% if type|default and type == 'saml' %}
                         {% if saml.providerName|default %}
                             <h1 style="text-align: center">{{ saml.providerName }}</h1>
+                        {% else %}
+                            <h1 style="text-align: center">DigiD Mock</h1>
+                        {% endif %}
                             <hr style="width: 200px">
                             <h2>Kies een persona</h2>
                             <form action="{{ path('app_default_index') }}" method="post">
@@ -34,7 +37,6 @@
                                 <input type="hidden" name="endpoint" value="{{ saml.endpoint }}">
                                 <button class="btn" type="submit">Inloggen</button>
                             </form>
-                        {% endif %}
                     {% else %}
                         <h2>Kies een persona</h2>
                         <form action="{{ responseUrl }}" method="post">

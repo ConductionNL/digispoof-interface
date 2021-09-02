@@ -3,19 +3,25 @@
 namespace App\Service;
 
 use App\Exception\DigiDException;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Cache\Adapter\AdapterInterface as CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class DigiDMockService
 {
     private XmlEncoder $xmlEncoder;
     private ParameterBagInterface $parameterBag;
+    private CacheInterface $cache;
 
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache)
     {
         $this->xmlEncoder = new XmlEncoder([]);
         $this->parameterBag = $parameterBag;
+        $this->cache = $cache;
     }
 
     public function verifySignature(string $certificate, string $parameters): bool
@@ -159,6 +165,7 @@ class DigiDMockService
         return $this->verifyAttributes($data) && $this->verifySignature('', $parameters);
     }
 
+
     public function getSamlRequest(Request $request): array
     {
         $samlRequest = $request->query->get('SAMLRequest');
@@ -168,20 +175,133 @@ class DigiDMockService
         return $data;
     }
 
+    public function saveBsnToCache($bsn): string
+    {
+        $uuid = Uuid::uuid4();
+        $hash = md5($uuid->toString());
+        $item = $this->cache->getItem('code_'. $hash);
+        $item->set($bsn);
+
+
+        $this->cache->save($item);
+        return $hash;
+    }
+
     /**
      * @param Request $request
-     * @throws DigiDException
+     * @return array
      */
-    public function handle(Request $request): void
+    public function handle(Request $request): array
     {
+        $errors = [];
+        $samlRequest = $this->getSamlRequest($request);
         try{
-            $samlRequest = $this->getSamlRequest($request);
             $this->verifyRequest($samlRequest, $request->getQueryString());
-            die;
         } catch(DigiDException $e){
-            echo $e->getMessage();
-            die;
-            throw $e;
+            if($this->parameterBag->get('debug'))
+                $errors[] = $e;
         }
+        $saml = [
+            'issuer' => $samlRequest['saml:Issuer'],
+            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
+            'providerName' => $samlRequest['ProviderName'] ?? null,
+            'errors' => $errors,
+        ];
+        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
+            $saml['endpoint'] = $saml['assertionConsumerService'];
+        } else {
+            //handle Assertion
+        }
+        return $saml;
+    }
+
+
+    public function buildArtifactResponse($bsn, $artifact)
+    {
+        $uuid = Uuid::uuid4();
+        $artifact = preg_replace("/\s+/", "", $artifact);
+
+        $message = [
+            '@xmlns:SOAP-ENV' => 'http://schemas.xmlsoap.org/soap/envelope/',
+            'SOAP-ENV:Body' => [
+                'samlp:ArtifactResponse' => [
+                    '@xmlns:samlp' => "urn:oasis:names:tc:SAML:2.0:protocol",
+                    '@xmlns:saml' => "urn:oasis:names:tc:SAML:2.0:assertion",
+                    '@xmlns:ds' => "http://www.w3.org/2000/09/xmldsig#",
+                    '@xmlns:ec' => "http://www.w3.org/2001/10/xml-exc-c14n#",
+                    '@ID' => $uuid->toString(),
+                    '@Version' => "2.0",
+                    '@IssueInstant' => date('Y-m-d H:i:s'),
+                    '@InResponseTo' => $artifact,
+                    'saml:Issuer' => $this->parameterBag->get('app_url'),
+                    'samlp:Status' => [
+                        'samlp:StatusCode' => [
+                            '@Value' => "urn:oasis:names:tc:SAML:2.0:status:Success"
+                        ]
+                    ],
+                    'samlp:Response' => [
+                        '@InResponseTo' => $artifact,
+                        '@Version' => "2.0",
+                        '@ID' => $uuid->toString(),
+                        '@IssueInstant' => date('Y-m-d H:i:s'),
+                        'saml:Issuer' => $this->parameterBag->get('app_url'),
+                        'saml:Subject' => [
+                            'saml:NameID' => "s00000000:". $bsn,
+                            'saml:SubjectConfirmation' => [
+                                '@Method' => "urn:oasis:names:tc:SAML:2.0:cm:bearer",
+                                'saml:SubjectConfirmationData' => [
+                                    '@InResponseTo' => $artifact,
+                                    '@Recipient' => 'https://digispoof.demodam.nl/artifact',
+                                    '@NotOnOrAfter' => date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." +2 minutes"))
+                                ]
+                            ]
+                        ],
+                        'saml:Condictions' => [
+                            '@NotBefore' => date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." -2 minutes")),
+                            '@NotOnOrAfter' => date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." +2 minutes")),
+                            'saml:AudienceRestriction' => [
+                                'saml:Audience' => $artifact,
+                            ]
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        return $this->xmlEncoder->encode($message, 'xml', ['remove_empty_tags' => true]);
+    }
+
+    public function retrieveFromCache($artifact): string
+    {
+
+        $item = $this->cache->getItem('code_'.preg_replace("/\s+/", "", $artifact));
+        if (!$item->isHit()) {
+            throw new HttpException('404', 'Artifact not found');
+        }
+
+        return $item->get();
+    }
+
+    public function handleArtifact(string $xml)
+    {
+        $array = $this->xmlEncoder->decode($xml, 'xml');
+
+        if (!isset($array['soapenv:Body']['samlp:ArtifactResolve']['samlp:Artifact'])) {
+            throw new HttpException('404', 'Artifact not found');
+        }
+        $bsn = $this->retrieveFromCache($array['soapenv:Body']['samlp:ArtifactResolve']['samlp:Artifact']);
+
+        return $this->buildArtifactResponse($bsn, $array['soapenv:Body']['samlp:ArtifactResolve']['samlp:Artifact']);
+    }
+
+    public function retrieveBsn(string $xml)
+    {
+        $array = $this->xmlEncoder->decode($xml, 'xml');
+
+        if (!isset($array['soapenv:Body']['samlp:ArtifactResolve']['samlp:Artifact'])) {
+            throw new HttpException('404', 'Artifact not found');
+        }
+
+        return $this->retrieveFromCache($array['Artifact']);
     }
 }
