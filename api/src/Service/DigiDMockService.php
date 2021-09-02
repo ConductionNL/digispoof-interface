@@ -245,14 +245,16 @@ class DigiDMockService
                         '@ID' => $uuid->toString(),
                         '@IssueInstant' => date('Y-m-d H:i:s'),
                         'saml:Issuer' => $this->parameterBag->get('app_url'),
-                        'saml:Subject' => [
-                            'saml:NameID' => "s00000000:". $bsn,
-                            'saml:SubjectConfirmation' => [
-                                '@Method' => "urn:oasis:names:tc:SAML:2.0:cm:bearer",
-                                'saml:SubjectConfirmationData' => [
-                                    '@InResponseTo' => $artifact,
-                                    '@Recipient' => 'https://digispoof.demodam.nl/artifact',
-                                    '@NotOnOrAfter' => date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." +2 minutes"))
+                        'saml:Assertion' => [
+                            'saml:Subject' => [
+                                'saml:NameID' => "s00000000:". $bsn,
+                                'saml:SubjectConfirmation' => [
+                                    '@Method' => "urn:oasis:names:tc:SAML:2.0:cm:bearer",
+                                    'saml:SubjectConfirmationData' => [
+                                        '@InResponseTo' => $artifact,
+                                        '@Recipient' => 'https://digispoof.demodam.nl/artifact',
+                                        '@NotOnOrAfter' => date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." +2 minutes"))
+                                    ]
                                 ]
                             ]
                         ],
