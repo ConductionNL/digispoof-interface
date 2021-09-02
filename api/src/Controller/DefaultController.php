@@ -68,7 +68,7 @@ class DefaultController extends AbstractController
         if ($request->isMethod('POST')) {
             $result = $request->request->all();
             $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
-            return $this->redirect($result['endpoint'] . "?SAMLArt=${artifact}");
+            return $this->redirect($result['endpoint'] . "?SAMLart=${artifact}");
         }
 
         if ($type) {
