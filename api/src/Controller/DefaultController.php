@@ -4,10 +4,14 @@
 
 namespace App\Controller;
 
+use App\Service\DigiDMockService;
+use App\Service\DigispoofService;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -20,8 +24,14 @@ class DefaultController extends AbstractController
     /**
      * @Route("/")
      * @Template
+     *
+     * @param Request             $request
+     * @param CommonGroundService $commonGroundService
+     * @param DigiDMockService    $digiDMockService
+     *
+     * @return array
      */
-    public function indexAction(Request $request, CommonGroundService $commonGroundService)
+    public function indexAction(Request $request, CommonGroundService $commonGroundService, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
     {
         $token = $request->query->get('token');
 
@@ -33,53 +43,59 @@ class DefaultController extends AbstractController
         }
 
         $backUrl = $request->query->get('backUrl');
-        $brpUrl = $request->query->get('brpUrl');
-        $url = $request->getHost();
+        $type = $request->query->get('type');
 
-        if ($brpUrl && $brpUrl == 'localhost') {
-            $people = [
-                //                [
-                //                    'burgerservicenummer'   => '900220806',
-                //                    'naam' => [
-                //                        'voornamen'             => 'testpersoon',
-                //                        'geslachtsnaam'         => '900220806',
-                //                        ],
-                //                ],
-                [
-                    'burgerservicenummer'   => '900220818',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220818',
-                    ],
-                ],
-                [
-                    'burgerservicenummer'   => '900220831',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220831',
-                    ],
-                ],
-                [
-                    'burgerservicenummer'   => '900220843',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220843',
-                    ],
-                ],
-                [
-                    'burgerservicenummer'   => '900220855',
-                    'naam'                  => [
-                        'voornamen'             => 'testpersoon',
-                        'geslachtsnaam'         => '900220855',
-                    ],
-                ],
-            ];
-        } elseif ($brpUrl) {
-            $people = $commonGroundService->getResourceList($brpUrl);
+        if ($request->query->has('SAMLRequest')) {
+            $saml = $digiDMockService->handle($request);
+            foreach ($saml['errors'] as $error) {
+                $this->addFlash('warning', $error->getMessage());
+            }
+            unset($saml['errors']);
+            $people = $digispoofService->testSet();
+
+            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
+        }
+
+        if ($request->isMethod('POST')) {
+            $result = $request->request->all();
+            $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
+
+            return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
+        }
+
+        if ($type) {
+            switch ($type) {
+                case 'testset':
+                    $people = $digispoofService->testSet();
+                    break;
+                case 'brp':
+                    $people = $digispoofService->getFromBRP();
+                    break;
+                default:
+                    $people = $digispoofService->testSet();
+                    break;
+            }
         } else {
-            $people = $commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
+            $people = $digispoofService->testSet();
         }
 
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
+    }
+
+    /**
+     * @Route("/artifact", methods={"POST"})
+     */
+    public function artifactAction(Request $request, DigiDMockService $digiDMockService)
+    {
+        if ($request->getContentType() !== 'xml') {
+            throw new HttpException('500', 'Content is not of type: XML');
+        }
+        $xml = $digiDMockService->handleArtifact($request->getContent());
+
+        $response = new Response($xml);
+
+        $response->headers->set('Content-Type', 'xml');
+
+        return $response;
     }
 }

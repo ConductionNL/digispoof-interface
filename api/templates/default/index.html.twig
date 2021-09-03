@@ -16,28 +16,49 @@
 
             <div class="content-background">
             	<div class="content">
-            		<h2>Kies een persona</h2>
 
-                    <form action="{{ responseUrl }}" method="post">
-                        <div class="input">
-                            <label class="input__label" for="color">Persoon</label>
-                            <select id="bsn" name="bsn" class="input__control input__control--m input__control--select ">
-                                {% for persoon in people %}
-								<option value="{{ persoon.burgerservicenummer  }}">{{ persoon.naam.voornamen }} {{ persoon.naam.geslachtsnaam }}</option>
-								{% endfor %}
-                            </select>
-                        </div>
-
-						<input type="hidden" name="response_url" value="{{ responseUrl }}">
-						<input type="hidden" name="token" value="{{ token }}">
-                        {% if backUrl is defined and backUrl is not empty %}
-                            <input type="hidden" name="back_url" value="{{ backUrl }}">
+                    {% if type|default and type == 'saml' %}
+                        {% if saml.providerName|default %}
+                            <h1 style="text-align: center">{{ saml.providerName }}</h1>
+                        {% else %}
+                            <h1 style="text-align: center">DigiD Mock</h1>
                         {% endif %}
+                            <hr style="width: 200px">
+                            <h2>Kies een persona</h2>
+                            <form action="{{ path('app_default_index') }}" method="post">
+                                <div class="input">
+                                    <label class="input__label" for="color">Persoon</label>
+                                    <select id="bsn" name="bsn" class="input__control input__control--m input__control--select ">
+                                        {% for persoon in people %}
+                                            <option value="{{ persoon.burgerservicenummer  }}">{{ persoon.naam.voornamen }} {{ persoon.naam.geslachtsnaam }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <input type="hidden" name="endpoint" value="{{ saml.endpoint }}">
+                                <button class="btn" type="submit">Inloggen</button>
+                            </form>
+                    {% else %}
+                        <h2>Kies een persona</h2>
+                        <form action="{{ responseUrl }}" method="post">
+                            <div class="input">
+                                <label class="input__label" for="color">Persoon</label>
+                                <select id="bsn" name="bsn" class="input__control input__control--m input__control--select ">
+                                    {% for persoon in people %}
+                                        <option value="{{ persoon.burgerservicenummer  }}">{{ persoon.naam.voornamen }} {{ persoon.naam.geslachtsnaam }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-                        <button class="btn" type="submit">Inloggen</button>
+                            <input type="hidden" name="response_url" value="{{ responseUrl }}">
+                            <input type="hidden" name="token" value="{{ token }}">
+                            {% if backUrl is defined and backUrl is not empty %}
+                                <input type="hidden" name="back_url" value="{{ backUrl }}">
+                            {% endif %}
 
-                   </form>
+                            <button class="btn" type="submit">Inloggen</button>
 
+                        </form>
+                    {% endif %}
                 </div><!-- /.content -->
             </div><!-- /.content-background -->
         </div><!-- /.col -->
