@@ -131,12 +131,27 @@ class DigiDMockService
         $this->checkAuthnContextClassRef($data);
     }
 
-    /**
-     * @param array $data
-     */
-    public function verifyAttributes(array $data): array
+    public function verifyDigidAttributes(array $data, array &$errors): void
     {
-        $errors = [];
+        try{
+            $this->checkDestination($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
+            $this->checkProtocolBinding($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+        try{
+            $this->checkConsumerService($data);
+        } catch (DigiDException $e){
+            $errors[] = $e;
+        }
+    }
+
+    public function verifyAttributes(array $data, array &$errors): void
+    {
         try{
             $this->checkSaml($data);
         } catch (DigiDException $e){
@@ -159,21 +174,11 @@ class DigiDMockService
         } catch (DigiDException $e) {
             $errors[] = $e;
         }
-        try{
-            $this->checkDestination($data);
-        } catch (DigiDException $e){
-            $errors[] = $e;
-        }
-        try{
-            $this->checkProtocolBinding($data);
-        } catch (DigiDException $e){
-            $errors[] = $e;
-        }
-        try{
-            $this->checkConsumerService($data);
-        } catch (DigiDException $e){
-            $errors[] = $e;
-        }
+        $this->verifyDigidAttributes($data, $errors);
+    }
+
+    public function verifyElements(array $data, array &$errors):void
+    {
         try{
             $this->checkIssuer($data);
         } catch (DigiDException $e){
@@ -189,6 +194,17 @@ class DigiDMockService
         } catch (DigiDException $e){
             $errors[] = $e;
         }
+    }
+
+    /**
+     * @param array $data
+     */
+    public function verifyXml(array $data): array
+    {
+        $errors = [];
+        $this->verifyAttributes($data, $errors);
+        $this->verifyElements($data, $errors);
+
         return $errors;
     }
 
@@ -200,7 +216,7 @@ class DigiDMockService
     public function verifyRequest(array $data, string $parameters): array
     {
 
-        return array_merge($this->verifyAttributes($data), $this->verifySignature('', $parameters));
+        return array_merge($this->verifyXml($data), $this->verifySignature('', $parameters));
     }
 
 
