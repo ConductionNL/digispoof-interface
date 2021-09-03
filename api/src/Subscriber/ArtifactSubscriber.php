@@ -13,15 +13,16 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ArtifactSubscriber implements EventSubscriberInterface
 {
-    private $commonGroundService;
+    private CommonGroundService $commonGroundService;
     private DigiDMockService $digiDMockService;
-    private $params;
+    private ParameterBagInterface $parameterBag;
+    private string $loggingComponent;
 
     public function __construct(CommonGroundService $commonGroundService, DigiDMockService $digiDMockService, ParameterBagInterface $params)
     {
         $this->commonGroundService = $commonGroundService;
         $this->digiDMockService = $digiDMockService;
-        $this->params = $params;
+        $this->parameterBag = $params;
     }
 
     public static function getSubscribedEvents()
@@ -40,21 +41,26 @@ class ArtifactSubscriber implements EventSubscriberInterface
         if ($route != '/artifact' || $method != 'POST') {
             return;
         }
-
-        $components = $this->params->get('components');
-
-        $loggingComponent = $this->getLoggingComponent($components);
-        if (!$loggingComponent) {
+        $this->loggingComponent = $this->getLoggingComponent();
+        if (!$this->loggingComponent) {
             return;
         }
-
         $bsn = $this->digiDMockService->retrieveBsn($event->getRequest()->getContent());
+        $verwerkteSoortenGegevens = $this->createProcessedDataTypes();
+        $verwerkteObject = $this->createProcessedObject($verwerkteSoortenGegevens, $bsn);
+        $verwerkingsacties = $this->createProcessingActions($verwerkteObject);
+    }
 
+    public function createProcessedDataTypes(): array
+    {
         $verwerkteSoortenGegevens = [
             'soortGegeven' => 'BSN',
         ];
-        $verwerkteSoortenGegevens = $this->commonGroundService->createResource($verwerkteSoortenGegevens, ['component' => $loggingComponent, 'type' => 'verwerkt_soort_gegevens']);
+        return $this->commonGroundService->createResource($verwerkteSoortenGegevens, ['component' => $this->loggingComponent, 'type' => 'verwerkt_soort_gegevens']);
+    }
 
+    public function createProcessedObject(array $verwerkteSoortenGegevens, string $bsn): array
+    {
         $verwerkteObject = [
             'objecttype'             => 'persoon',
             'soortObjectId'          => 'BSN',
@@ -64,8 +70,10 @@ class ArtifactSubscriber implements EventSubscriberInterface
             ],
         ];
 
-        $verwerkteObject = $this->commonGroundService->createResource($verwerkteObject, ['component' => $loggingComponent, 'type' => 'verwerkt_objects']);
+        return $this->commonGroundService->createResource($verwerkteObject, ['component' => $this->loggingComponent, 'type' => 'verwerkt_objects']);
+    }
 
+    public function createProcessingActions(array $verwerkteObject){
         $verwerkingsacties = [
             'actieNaam'         => 'BSN nummer opgevraagd',
             'handelingsNaam'    => 'Digispoof login',
@@ -77,11 +85,13 @@ class ArtifactSubscriber implements EventSubscriberInterface
             ],
         ];
 
-        $verwerkingsacties = $this->commonGroundService->createResource($verwerkingsacties, ['component' => $loggingComponent, 'type' => 'verwerkings_acties']);
+        return $this->commonGroundService->createResource($verwerkingsacties, ['component' => $this->loggingComponent, 'type' => 'verwerkings_acties']);
     }
 
-    public function getLoggingComponent(array $components): ?string
+    public function getLoggingComponent(): ?string
     {
+
+        $components = $this->parameterBag->get('components');
         if (key_exists('loggingcomponent', $components)) {
             return 'loggingcomponent';
         } elseif (key_exists('logging-component', $components)) {
