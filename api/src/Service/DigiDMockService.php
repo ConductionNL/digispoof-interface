@@ -233,7 +233,7 @@ class DigiDMockService
     {
         $errors = [];
         $samlRequest = $this->getSamlRequest($request);
-        if($request->query->has('validatedigid') && $request->query->get('validatedigid')){
+        if($request->query->has('validatedigid') && $request->query->get('validatedigid') == 'true'){
             $errors = $this->verifyRequest($samlRequest, $request->getQueryString());
         }
 
