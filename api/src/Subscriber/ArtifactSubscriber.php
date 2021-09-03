@@ -56,6 +56,7 @@ class ArtifactSubscriber implements EventSubscriberInterface
         $verwerkteSoortenGegevens = [
             'soortGegeven' => 'BSN',
         ];
+
         return $this->commonGroundService->createResource($verwerkteSoortenGegevens, ['component' => $this->loggingComponent, 'type' => 'verwerkt_soort_gegevens']);
     }
 
@@ -73,7 +74,8 @@ class ArtifactSubscriber implements EventSubscriberInterface
         return $this->commonGroundService->createResource($verwerkteObject, ['component' => $this->loggingComponent, 'type' => 'verwerkt_objects']);
     }
 
-    public function createProcessingActions(array $verwerkteObject){
+    public function createProcessingActions(array $verwerkteObject)
+    {
         $verwerkingsacties = [
             'actieNaam'         => 'BSN nummer opgevraagd',
             'handelingsNaam'    => 'Digispoof login',
@@ -90,7 +92,6 @@ class ArtifactSubscriber implements EventSubscriberInterface
 
     public function getLoggingComponent(): ?string
     {
-
         $components = $this->parameterBag->get('components');
         if (key_exists('loggingcomponent', $components)) {
             return 'loggingcomponent';

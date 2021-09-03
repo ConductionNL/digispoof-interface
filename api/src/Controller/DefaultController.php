@@ -6,10 +6,8 @@ namespace App\Controller;
 
 use App\Service\DigiDMockService;
 use App\Service\DigispoofService;
-use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -25,9 +23,11 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", methods={"GET"})
      * @Template
-     * @param Request             $request
-     * @param DigiDMockService    $digiDMockService
-     * @param DigispoofService    $digispoofService
+     *
+     * @param Request          $request
+     * @param DigiDMockService $digiDMockService
+     * @param DigispoofService $digispoofService
+     *
      * @return array
      */
     public function indexAction(Request $request, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
@@ -63,6 +63,7 @@ class DefaultController extends AbstractController
         } else {
             $people = $digispoofService->testSet();
         }
+
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
     }
 
@@ -73,7 +74,8 @@ class DefaultController extends AbstractController
     {
         $result = $request->request->all();
         $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
-        return $this->redirect($result['endpoint'] . "?SAMLart=${artifact}");
+
+        return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
     }
 
     /**
