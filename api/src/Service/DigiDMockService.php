@@ -260,6 +260,7 @@ class DigiDMockService
         } else {
             //handle Assertion
         }
+
         return $saml;
     }
 
@@ -278,6 +279,7 @@ class DigiDMockService
             }
         }
         $saml = $this->getRelevantSamlData($samlRequest);
+
         return $saml;
     }
 
