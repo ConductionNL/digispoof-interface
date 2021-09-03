@@ -56,6 +56,7 @@ class DefaultController extends AbstractController
             foreach($saml['errors'] as $error){
                 $this->addFlash('warning', $error->getMessage());
             }
+            unset($saml['errors']);
             $people = $digispoofService->testSet();
             return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
         }

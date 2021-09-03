@@ -34,7 +34,7 @@ class DigiDMockService
         if(!key_exists('@xmlns:saml', $data)){
             throw new DigiDException('The attribute \'saml\' is missing in your SAML Request');
         } elseif ($data['@xmlns:saml'] != "urn:oasis:names:tc:SAML:2.0:assertion") {
-            throw new DigiDException("The value of attribute 'saml' is not valid. \nGot '{$data['@xmlns:saml']}', \nExpected 'urn:oasis:names:tc:SAML:2.0:assertion'");
+            throw new DigiDException("The value of attribute 'saml' is not valid. Expected 'urn:oasis:names:tc:SAML:2.0:assertion', got '{$data['@xmlns:saml']}'");
         }
     }
 
@@ -43,7 +43,7 @@ class DigiDMockService
         if(!key_exists('@xmlns:samlp', $data)){
             throw new DigiDException('The attribute \'samlp\' is missing in your SAML Request');
         } elseif ($data['@xmlns:samlp'] != "urn:oasis:names:tc:SAML:2.0:protocol") {
-            throw new DigiDException("The value of attribute 'samlp' is not valid. \nGot '{$data['@xmlns:samlp']}', \nExpected 'urn:oasis:names:tc:SAML:2.0:protocol'");
+            throw new DigiDException("The value of attribute 'samlp' is not valid. Expected 'urn:oasis:names:tc:SAML:2.0:protocol', got '{$data['@xmlns:samlp']}'");
         }
     }
 
@@ -66,7 +66,7 @@ class DigiDMockService
         if(!key_exists('@Destination', $data)){
             throw new DigiDException('The attribute \'Destination\' is missing in your SAML Request');
         } elseif ($data['@Destination'] != $this->parameterBag->get("app_url")) {
-            throw new DigiDException("The value of attribute 'Destination' is not valid. \nGot '{$data['@Destination']}', \nExpected '{$this->parameterBag->get("app_url")}'");
+            throw new DigiDException("The value of attribute 'Destination' is not valid. Expected '{$this->parameterBag->get("app_url")}', got '{$data['@Destination']}'");
         }
     }
 
@@ -75,7 +75,7 @@ class DigiDMockService
         if(!key_exists('@ProtocolBinding', $data)){
             throw new DigiDException('The attribute \'ProtocolBinding\' is missing in your SAML Request');
         } elseif ($data['@ProtocolBinding'] != "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact") {
-            throw new DigiDException("The value of attribute 'Destination' is not valid. \nGot '{$data['@ProtocolBinding']}', \nExpected 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'");
+            throw new DigiDException("The value of attribute 'Destination' is not valid. Expected 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact', got '{$data['@ProtocolBinding']}'");
         }
     }
 
@@ -84,7 +84,7 @@ class DigiDMockService
         if(!key_exists('@Format', $data['samlp:NameIDPolicy'])){
             throw new DigiDException('The attribute \'Format\' is missing in your SAML Request in element \'samlp:NameIDPolicy\'');
         } elseif ($data['samlp:NameIDPolicy']['@Format'] != "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified") {
-            throw new DigiDException("The value of attribute 'Format' in element 'samlp:NameIDPolicy' is not valid. \nGot '{$data['@ProtocolBinding']}', \nExpected 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'");
+            throw new DigiDException("The value of attribute 'Format' in element 'samlp:NameIDPolicy' is not valid. Expected 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified', got '{$data['@ProtocolBinding']}'");
         }
     }
 
@@ -115,7 +115,7 @@ class DigiDMockService
         if(!key_exists('saml:AuthnContextClassRef', $data['samlp:RequestedAuthnContext'])){
             throw new DigiDException('The element \'saml:AuthnContextClassRef\' in element \'samlp:RequestedAuthnContext\' is missing in your SAML Request');
         } elseif ($data['samlp:RequestedAuthnContext']['saml:AuthnContextClassRef'] != "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport") {
-            throw new DigiDException("The value of element 'saml:AuthnContextClassRef' in element 'samlp:RequestedAuthnContext' is not valid. \nGot '{$data['samlp:RequestedAuthnContext']['saml:AuthnContextClassRef']}', \nExpected 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport'");
+            throw new DigiDException("The value of element 'saml:AuthnContextClassRef' in element 'samlp:RequestedAuthnContext' is not valid. Expected 'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport', got '{$data['samlp:RequestedAuthnContext']['saml:AuthnContextClassRef']}'");
         }
     }
 
