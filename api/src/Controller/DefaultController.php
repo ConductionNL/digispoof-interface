@@ -4,9 +4,8 @@
 
 namespace App\Controller;
 
-use App\Service\DigispoofService;
-use App\Exception\DigiDException;
 use App\Service\DigiDMockService;
+use App\Service\DigispoofService;
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,14 +24,15 @@ class DefaultController extends AbstractController
     /**
      * @Route("/")
      * @Template
-     * @param Request $request
+     *
+     * @param Request             $request
      * @param CommonGroundService $commonGroundService
-     * @param DigiDMockService $digiDMockService
+     * @param DigiDMockService    $digiDMockService
+     *
      * @return array
      */
     public function indexAction(Request $request, CommonGroundService $commonGroundService, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
     {
-
         $token = $request->query->get('token');
 
         //responce is deprecated but still used in some applications so we still support it.
@@ -45,20 +45,22 @@ class DefaultController extends AbstractController
         $backUrl = $request->query->get('backUrl');
         $type = $request->query->get('type');
 
-        if($request->query->has('SAMLRequest')){
+        if ($request->query->has('SAMLRequest')) {
             $saml = $digiDMockService->handle($request);
-            foreach($saml['errors'] as $error){
+            foreach ($saml['errors'] as $error) {
                 $this->addFlash('warning', $error->getMessage());
             }
             unset($saml['errors']);
             $people = $digispoofService->testSet();
+
             return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
         }
 
         if ($request->isMethod('POST')) {
             $result = $request->request->all();
             $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
-            return $this->redirect($result['endpoint'] . "?SAMLart=${artifact}");
+
+            return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
         }
 
         if ($type) {
@@ -77,7 +79,6 @@ class DefaultController extends AbstractController
             $people = $digispoofService->testSet();
         }
 
-
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
     }
 
@@ -86,7 +87,6 @@ class DefaultController extends AbstractController
      */
     public function artifactAction(Request $request, DigiDMockService $digiDMockService)
     {
-
         if ($request->getContentType() !== 'xml') {
             throw new HttpException('500', 'Content is not of type: XML');
         }
@@ -98,5 +98,4 @@ class DefaultController extends AbstractController
 
         return $response;
     }
-
 }
