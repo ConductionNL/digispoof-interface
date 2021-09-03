@@ -1,13 +1,8 @@
 <?php
 
-
 namespace App\Service;
 
-
 use Conduction\CommonGroundBundle\Service\CommonGroundService;
-use DateTime;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface as CacheInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -26,7 +21,7 @@ class DigispoofService
     }
 
     /**
-     * this function retrieves people from brp endpoint
+     * this function retrieves people from brp endpoint.
      *
      * @return mixed people retrieved from brp endpoint
      */
@@ -36,7 +31,7 @@ class DigispoofService
     }
 
     /**
-     * This function generates a test data set with test people from vrijBRP
+     * This function generates a test data set with test people from vrijBRP.
      *
      * @return array[] returns test people array
      */
@@ -90,9 +85,9 @@ class DigispoofService
 
     public function handleRedirectBinding(string $samlRequest): array
     {
-
         $xml = base64_decode($samlRequest);
         $xml = gzinflate($xml);
+
         return $this->handlePostBinding($xml);
     }
 
@@ -104,13 +99,13 @@ class DigispoofService
     public function xmlStringToArray(string $xml): array
     {
         $xml = simplexml_load_string($xml);
-        $attributes = (array)$xml->attributes();
+        $attributes = (array) $xml->attributes();
         $attributes = $attributes['@attributes'];
-        $issuer = (array)$xml->children('urn:oasis:names:tc:SAML:2.0:assertion');
+        $issuer = (array) $xml->children('urn:oasis:names:tc:SAML:2.0:assertion');
         $saml = [
-            'issuer' => $issuer['Issuer'],
+            'issuer'                   => $issuer['Issuer'],
             'assertionConsumerService' => $attributes['AssertionConsumerServiceURL'] ?? $attributes['AssertionConsumerServiceIndex'],
-            'providerName' => $attributes['ProviderName'] ?? null
+            'providerName'             => $attributes['ProviderName'] ?? null,
         ];
 
         if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
@@ -118,15 +113,13 @@ class DigispoofService
         } else {
             //handle Assertion
         }
+
         return $saml;
     }
 
-
-
     public function retrieveFromCache($artifact): string
     {
-
-        $item = $this->cache->getItem('code_'.preg_replace("/\s+/", "", $artifact));
+        $item = $this->cache->getItem('code_'.preg_replace("/\s+/", '', $artifact));
         if (!$item->isHit()) {
             throw new HttpException('404', 'Artifact not found');
         }
