@@ -41,7 +41,7 @@ class ArtifactSubscriber implements EventSubscriberInterface
         if ($route != '/artifact' || $method != 'POST') {
             return;
         }
-        $this->loggingComponent = $this->getLoggingComponent();
+        $this->loggingComponent = $this->getLoggingComponent($this->parameterBag->get('components'));
         if (!$this->loggingComponent) {
             return;
         }
@@ -90,9 +90,8 @@ class ArtifactSubscriber implements EventSubscriberInterface
         return $this->commonGroundService->createResource($verwerkingsacties, ['component' => $this->loggingComponent, 'type' => 'verwerkings_acties']);
     }
 
-    public function getLoggingComponent(): ?string
+    public function getLoggingComponent($components): ?string
     {
-        $components = $this->parameterBag->get('components');
         if (key_exists('loggingcomponent', $components)) {
             return 'loggingcomponent';
         } elseif (key_exists('logging-component', $components)) {
