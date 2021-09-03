@@ -248,7 +248,8 @@ class DigiDMockService
         return $hash;
     }
 
-    public function getRelevantSamlData(array $samlRequest){
+    public function getRelevantSamlData(array $samlRequest)
+    {
         $saml = [
             'issuer'                   => $samlRequest['saml:Issuer'],
             'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
@@ -259,6 +260,7 @@ class DigiDMockService
         } else {
             //handle Assertion
         }
+
         return $saml;
     }
 
@@ -277,6 +279,7 @@ class DigiDMockService
             }
         }
         $saml = $this->getRelevantSamlData($samlRequest);
+
         return $saml;
     }
 
