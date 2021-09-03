@@ -258,7 +258,7 @@ class DigiDMockService
         $samlRequest = $this->getSamlRequest($request);
         if ($request->query->has('validatedigid') && $request->query->get('validatedigid') == 'true') {
             $errors = $this->verifyRequest($samlRequest, $request->getQueryString());
-            foreach($errors as $error){
+            foreach ($errors as $error) {
                 $this->flashBag->add('warning', $error->getMessage());
             }
         }
@@ -266,7 +266,7 @@ class DigiDMockService
         $saml = [
             'issuer'                   => $samlRequest['saml:Issuer'],
             'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
-            'providerName' => $samlRequest['ProviderName'] ?? null,
+            'providerName'             => $samlRequest['ProviderName'] ?? null,
         ];
         if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
             $saml['endpoint'] = $saml['assertionConsumerService'];
