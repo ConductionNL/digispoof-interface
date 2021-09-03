@@ -248,6 +248,20 @@ class DigiDMockService
         return $hash;
     }
 
+    public function getRelevantSamlData(array $samlRequest){
+        $saml = [
+            'issuer'                   => $samlRequest['saml:Issuer'],
+            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
+            'providerName'             => $samlRequest['ProviderName'] ?? null,
+        ];
+        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
+            $saml['endpoint'] = $saml['assertionConsumerService'];
+        } else {
+            //handle Assertion
+        }
+        return $saml;
+    }
+
     /**
      * @param Request $request
      *
@@ -262,18 +276,7 @@ class DigiDMockService
                 $this->flashBag->add('warning', $error->getMessage());
             }
         }
-
-        $saml = [
-            'issuer'                   => $samlRequest['saml:Issuer'],
-            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
-            'providerName'             => $samlRequest['ProviderName'] ?? null,
-        ];
-        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
-            $saml['endpoint'] = $saml['assertionConsumerService'];
-        } else {
-            //handle Assertion
-        }
-
+        $saml = $this->getRelevantSamlData($samlRequest);
         return $saml;
     }
 
