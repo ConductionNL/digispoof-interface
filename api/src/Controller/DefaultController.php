@@ -45,12 +45,6 @@ class DefaultController extends AbstractController
         $backUrl = $request->query->get('backUrl');
         $type = $request->query->get('type');
 
-//        if ($request->isMethod('POST') && $request->getContentType() == 'xml') {
-//            $saml = $digispoofService->handlePostBinding($request->getContent());
-//            $people = $digispoofService->testSet();
-//            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
-//        }
-
         if($request->query->has('SAMLRequest')){
             $saml = $digiDMockService->handle($request);
             foreach($saml['errors'] as $error){
@@ -60,11 +54,6 @@ class DefaultController extends AbstractController
             $people = $digispoofService->testSet();
             return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
         }
-//        if ($request->query->has('SAMLRequest')) {
-//            $saml = $digispoofService->handleRedirectBinding($request->query->get('SAMLRequest'));
-//            $people = $digispoofService->testSet();
-//            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
-//        }
 
         if ($request->isMethod('POST')) {
             $result = $request->request->all();
