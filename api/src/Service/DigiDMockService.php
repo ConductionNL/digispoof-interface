@@ -415,7 +415,6 @@ class DigiDMockService
 
     public function getKeyDescriptor(string $use): array
     {
-//        var_dump(str_replace(['-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----'], '', $this->parameterBag->get('app_x509_cert')));
         return [
             'md:KeyDescriptor'              => [
                 '@use'  => $use,
