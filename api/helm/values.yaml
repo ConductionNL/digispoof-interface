@@ -65,9 +65,9 @@ postgresql:
 
 ingress:
   enabled: false
+  type: "nginx"
   hostname: .local
   path: /
-  type: "traefik"
   annotations:
     # kubernetes.io/ingress.global-static-ip-name: chart-ip
     # kubernetes.io/ingress.class: gce

@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\Application;
 use App\Exception\DigiDException;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Cache\Adapter\AdapterInterface as CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -17,17 +19,44 @@ class DigiDMockService
     private ParameterBagInterface $parameterBag;
     private FlashBagInterface $flashBag;
     private CacheInterface $cache;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache, FlashBagInterface $flashBag)
+    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache, FlashBagInterface $flashBag, EntityManagerInterface $entityManager)
     {
         $this->xmlEncoder = new XmlEncoder([]);
         $this->parameterBag = $parameterBag;
         $this->cache = $cache;
         $this->flashBag = $flashBag;
+        $this->entityManager = $entityManager;
     }
 
-    public function verifySignature(string $certificate, string $parameters): array
+    public function fetchApplication(string $entityId): ?Application
     {
+        $applications = $this->entityManager->getRepository('App:Application')->findBy(['entityId' => $entityId], ['dateModified' => 'ASC']);
+        $application = end($applications);
+        if($application instanceof Application){
+            return $application;
+        }
+        return null;
+    }
+
+    public function verifySignature(array $data, string $parameters): array
+    {
+        if(!isset($data['saml:Issuer'])){
+            return [new DigiDException('The element \'saml:Issuer\' is missing in your SAML Request')];
+        }
+
+        $application = $this->fetchApplication($data['saml:Issuer']);
+        if(!$application){
+            return [new DigiDException("There is no application registered with the enitityId: {$data['saml:Issuer']}")];
+        }
+
+        $message = substr($parameters, strpos($parameters, 'SAMLRequest'), strpos($parameters, '&Signature=') - strpos($parameters, 'SAMLRequest'));
+        $signature = explode('&', substr($parameters, strpos($parameters, 'Signature=') + strlen('Signature=')))[0];
+
+        if(!openssl_verify($message, base64_decode(rawurldecode($signature)), openssl_pkey_get_public($application->getCertificate()), "sha256WithRSAEncryption")){
+            return [new DigiDException("The request signature could not be verified")];
+        }
         return [];
     }
 
@@ -224,7 +253,7 @@ class DigiDMockService
      */
     public function verifyRequest(array $data, string $parameters): array
     {
-        return array_merge($this->verifyXml($data), $this->verifySignature('', $parameters));
+        return array_merge($this->verifyXml($data), $this->verifySignature($data, $parameters));
     }
 
     public function getSamlRequest(Request $request): array
@@ -273,7 +302,7 @@ class DigiDMockService
     {
         $samlRequest = $this->getSamlRequest($request);
         if ($request->query->has('validatedigid') && $request->query->get('validatedigid') == 'true') {
-            $errors = $this->verifyRequest($samlRequest, $request->getQueryString());
+            $errors = $this->verifyRequest($samlRequest, explode('?',$request->getRequestUri())[1]);
             foreach ($errors as $error) {
                 $this->flashBag->add('warning', $error->getMessage());
             }

@@ -33,16 +33,11 @@ class DefaultController extends AbstractController
     public function indexAction(Request $request, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
     {
         $token = $request->query->get('token');
-
-        //responce is deprecated but still used in some applications so we still support it.
-        if ($request->query->get('responceUrl')) {
-            $responseUrl = $request->query->get('responceUrl');
-        } else {
-            $responseUrl = $request->query->get('responseUrl');
-        }
-
         $backUrl = $request->query->get('backUrl');
         $type = $request->query->get('type');
+
+        //responce is deprecated but still used in some applications so we still support it.
+        $responseUrl = $request->query->get('responseUrl', $request->query->get('responceUrl'));
 
         if ($request->query->has('SAMLRequest')) {
             $saml = $digiDMockService->handle($request);
@@ -51,17 +46,13 @@ class DefaultController extends AbstractController
             return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
         }
 
-        if ($type) {
-            switch ($type) {
-                case 'brp':
-                    $people = $digispoofService->getFromBRP();
-                    break;
-                default:
-                    $people = $digispoofService->testSet();
-                    break;
-            }
-        } else {
-            $people = $digispoofService->testSet();
+        switch ($type) {
+            case 'brp':
+                $people = $digispoofService->getFromBRP();
+                break;
+            default:
+                $people = $digispoofService->testSet();
+                break;
         }
 
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
