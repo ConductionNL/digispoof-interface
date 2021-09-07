@@ -19,26 +19,17 @@ class DigiDMockService
     private ParameterBagInterface $parameterBag;
     private FlashBagInterface $flashBag;
     private CacheInterface $cache;
-    private EntityManagerInterface $entityManager;
+    private ApplicationService $applicationService;
 
-    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache, FlashBagInterface $flashBag, EntityManagerInterface $entityManager)
+    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache, FlashBagInterface $flashBag, ApplicationService $applicationService)
     {
         $this->xmlEncoder = new XmlEncoder([]);
         $this->parameterBag = $parameterBag;
         $this->cache = $cache;
         $this->flashBag = $flashBag;
-        $this->entityManager = $entityManager;
+        $this->applicationService = $applicationService;
     }
 
-    public function fetchApplication(string $entityId): ?Application
-    {
-        $applications = $this->entityManager->getRepository('App:Application')->findBy(['entityId' => $entityId], ['dateModified' => 'ASC']);
-        $application = end($applications);
-        if($application instanceof Application){
-            return $application;
-        }
-        return null;
-    }
 
     public function verifySignature(array $data, string $parameters): array
     {
@@ -46,7 +37,7 @@ class DigiDMockService
             return [new DigiDException('The element \'saml:Issuer\' is missing in your SAML Request')];
         }
 
-        $application = $this->fetchApplication($data['saml:Issuer']);
+        $application = $this->applicationService->findApplicationByEntityId($data['saml:Issuer']);
         if(!$application){
             return [new DigiDException("There is no application registered with the enitityId: {$data['saml:Issuer']}")];
         }

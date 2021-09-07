@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="content-background">
+            	<div class="content">
+                    <h2>Applicatie: {{ application.name }}</h2>
+                    <hr>
+                    <ul>
+                        <li>Id: {{ application.id }}</li>
+                        <li>Naam: {{ application.name }}</li>
+                        <li>Entity Id: {{ application.entityId }}</li>
+                        <li>Email Adres: {{ application.emailAddress }}</li>
+
+                        <li>
+                            <a href="{{ path('app_default_applicationcertificate', {id: application.id}) }}" download>
+                                <div class="file">
+                                    <i class="file__icon icon icon-document" role="presentation"></i>
+                                    <div class="file__data">
+                                        <div class="file__filename">
+                                            <strong class="file__title break-all">PEM</strong>
+                                            <span class="meta">Certificate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        {% if application.privateKey|default %}
+                        <li>
+                            <a href="{{ path('app_default_applicationprivatekey', {id: application.id}) }}" download>
+                                <div class="file">
+                                    <i class="file__icon icon icon-document" role="presentation"></i>
+                                    <div class="file__data">
+                                        <div class="file__filename">
+                                            <strong class="file__title break-all">PEM</strong>
+                                            <span class="meta">Private Key</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+
+                </div><!-- /.content -->
+            </div><!-- /.content-background -->
+        </div><!-- /.col -->
+
+        <div class="col-md-4">
+
+            <div class="content-background" >
+            	<div class="content">
+            		<h2>Over dit formulier</h2>
+					<p>Met dit formulier kunt u een applicatie aanmelden voor deze instantie van DigiSpoof.</p>
+					<p>Door uw applicatie hier aan te melden en het aangemelde, of gegenereerde, certificaat te gebruiken in uw applicatie kan de digispoof de signature controleren die uw applicatie meegeeft naar de applicatie.</p>
+                    <p>U kunt desgewenst zelf een certificaat doorgeven aan de applicatie. Indien u de private key van dit certificaat kwijt bent zult u in dat geval een nieuw certificaat moeten opgeven.</p>
+                </div><!-- /.content -->
+            </div><!-- /.content-background -->
+        </div><!-- /.col -->
+	</div><!-- /.row -->
+
+
+{% endblock %}
+

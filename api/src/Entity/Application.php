@@ -123,6 +123,11 @@ class Application
      */
     private DateTime $dateModified;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $emailAddress;
+
     public function getId(): ?UuidInterface
     {
         return $this->id;
@@ -196,6 +201,18 @@ class Application
     public function setDateModified(?\DateTimeInterface $dateModified): self
     {
         $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    public function getEmailAddress(): ?string
+    {
+        return $this->emailAddress;
+    }
+
+    public function setEmailAddress(string $emailAddress): self
+    {
+        $this->emailAddress = $emailAddress;
 
         return $this;
     }
