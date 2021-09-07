@@ -70,6 +70,12 @@ class DefaultController extends AbstractController
         $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
 
         return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
+
+        //        if ($request->isMethod('POST') && $request->getContentType() == 'xml') {
+//            $saml = $digispoofService->handlePostBinding($request->getContent());
+//            $people = $digispoofService->testSet();
+//            return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
+//        }
     }
 
     /**

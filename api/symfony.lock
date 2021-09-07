@@ -230,6 +230,9 @@
     "ocramius/proxy-manager": {
         "version": "2.8.0"
     },
+    "onelogin/php-saml": {
+        "version": "4.0.0"
+    },
     "phar-io/manifest": {
         "version": "1.0.3"
     },
@@ -324,6 +327,9 @@
         "files": [
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
+    },
+    "robrichards/xmlseclibs": {
+        "version": "3.1.1"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"

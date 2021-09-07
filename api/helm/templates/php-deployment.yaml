@@ -27,6 +27,14 @@ spec:
             secret:
               secretName: {{ template "fullname" . }}-dependencies
               defaultMode: 420
+          - name: certificates
+            secret:
+              {{ if .Values.security.certificate.existingSecret }}
+              secretName: {{ .Values.security.certificate.existingSecret }}
+              {{ else }}
+              secretName: {{ template "fullname" . }}-certificate
+              {{ end }}
+              defaultMode: 420
       containers:
         - name: {{ .Release.Name }}-php
           image: "{{ .Values.php.image }}:{{ .Values.php.tag }}"
@@ -37,6 +45,9 @@ spec:
             - mountPath: /srv/api/config/packages/dependencies.yaml
               subPath: dependencies.yaml
               name: dependencies
+              readOnly: true
+            - mountPath: /var/run/certs
+              name: certificates
               readOnly: true
           env:
             - name: JWT_SECRET_KEY
@@ -103,6 +114,16 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: url
+                  name: {{ template "fullname" . }}
+            - name: APP_CERT
+              valueFrom:
+                secretKeyRef:
+                  key: certificate
+                  name: {{ template "fullname" . }}
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: private_key
                   name: {{ template "fullname" . }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
