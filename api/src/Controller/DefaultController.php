@@ -107,7 +107,8 @@ class DefaultController extends AbstractController
     /**
      * @Route("/application/{id}/private_key", methods={"GET"})
      * @Template
-     * @param string $id
+     *
+     * @param string             $id
      * @param ApplicationService $applicationService
      */
     public function applicationPrivateKeyAction(string $id, ApplicationService $applicationService)
@@ -123,7 +124,7 @@ class DefaultController extends AbstractController
             $application->getPrivateKey(),
             200,
             [
-                'Content-Type' => 'application/x-pem-file',
+                'Content-Type'        => 'application/x-pem-file',
                 'Content-Disposition' => $disposition,
             ]
         );
@@ -131,7 +132,8 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/application/{id}/certificate", methods={"GET"})
-     * @param string $id
+     *
+     * @param string             $id
      * @param ApplicationService $applicationService
      */
     public function applicationCertificateAction(string $id, ApplicationService $applicationService)
@@ -147,7 +149,7 @@ class DefaultController extends AbstractController
             $application->getCertificate(),
             200,
             [
-                'Content-Type' => 'application/x-pem-file',
+                'Content-Type'        => 'application/x-pem-file',
                 'Content-Disposition' => $disposition,
             ]
         );
@@ -156,7 +158,8 @@ class DefaultController extends AbstractController
     /**
      * @Route("/application/{id}", methods={"GET"})
      * @Template
-     * @param string $id
+     *
+     * @param string             $id
      * @param ApplicationService $applicationService
      */
     public function applicationItemAction(Request $request, string $id, ApplicationService $applicationService)
@@ -166,17 +169,19 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/application", methods={"POST"})
-     * @param Request $request
+     *
+     * @param Request            $request
      * @param ApplicationService $applicationService
      */
     public function applicationCreateAction(Request $request, ApplicationService $applicationService)
     {
         $requestData = $request->request->all();
-        try{
+
+        try {
             $application = $applicationService->createApplication($requestData);
 
             return $this->redirect($this->generateUrl('app_default_applicationitem', ['id' => $application->getId()]));
-        } catch(Exception $exception){
+        } catch (Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
 
             return $this->redirect($this->generateUrl('app_default_application'));
