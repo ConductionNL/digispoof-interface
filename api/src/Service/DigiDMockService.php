@@ -7,6 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Cache\Adapter\AdapterInterface as CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
@@ -14,13 +15,15 @@ class DigiDMockService
 {
     private XmlEncoder $xmlEncoder;
     private ParameterBagInterface $parameterBag;
+    private FlashBagInterface $flashBag;
     private CacheInterface $cache;
 
-    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache)
+    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache, FlashBagInterface $flashBag)
     {
         $this->xmlEncoder = new XmlEncoder([]);
         $this->parameterBag = $parameterBag;
         $this->cache = $cache;
+        $this->flashBag = $flashBag;
     }
 
     public function verifySignature(string $certificate, string $parameters): array
@@ -245,6 +248,22 @@ class DigiDMockService
         return $hash;
     }
 
+    public function getRelevantSamlData(array $samlRequest): array
+    {
+        $saml = [
+            'issuer'                   => $samlRequest['saml:Issuer'],
+            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
+            'providerName'             => $samlRequest['ProviderName'] ?? null,
+        ];
+        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
+            $saml['endpoint'] = $saml['assertionConsumerService'];
+        } else {
+            //handle Assertion
+        }
+
+        return $saml;
+    }
+
     /**
      * @param Request $request
      *
@@ -252,23 +271,14 @@ class DigiDMockService
      */
     public function handle(Request $request): array
     {
-        $errors = [];
         $samlRequest = $this->getSamlRequest($request);
         if ($request->query->has('validatedigid') && $request->query->get('validatedigid') == 'true') {
             $errors = $this->verifyRequest($samlRequest, $request->getQueryString());
+            foreach ($errors as $error) {
+                $this->flashBag->add('warning', $error->getMessage());
+            }
         }
-
-        $saml = [
-            'issuer'                   => $samlRequest['saml:Issuer'],
-            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
-            'providerName'             => $samlRequest['ProviderName'] ?? null,
-            'errors'                   => $errors,
-        ];
-        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
-            $saml['endpoint'] = $saml['assertionConsumerService'];
-        } else {
-            //handle Assertion
-        }
+        $saml = $this->getRelevantSamlData($samlRequest);
 
         return $saml;
     }

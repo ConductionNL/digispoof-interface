@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Service\DigiDMockService;
 use App\Service\DigispoofService;
-use Conduction\CommonGroundBundle\Service\CommonGroundService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,16 +21,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      * @Template
      *
-     * @param Request             $request
-     * @param CommonGroundService $commonGroundService
-     * @param DigiDMockService    $digiDMockService
+     * @param Request          $request
+     * @param DigiDMockService $digiDMockService
+     * @param DigispoofService $digispoofService
      *
      * @return array
      */
-    public function indexAction(Request $request, CommonGroundService $commonGroundService, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
+    public function indexAction(Request $request, DigiDMockService $digiDMockService, DigispoofService $digispoofService)
     {
         $token = $request->query->get('token');
 
@@ -47,27 +46,13 @@ class DefaultController extends AbstractController
 
         if ($request->query->has('SAMLRequest')) {
             $saml = $digiDMockService->handle($request);
-            foreach ($saml['errors'] as $error) {
-                $this->addFlash('warning', $error->getMessage());
-            }
-            unset($saml['errors']);
             $people = $digispoofService->testSet();
 
             return ['people' => $people, 'type' => 'saml', 'saml' => $saml];
         }
 
-        if ($request->isMethod('POST')) {
-            $result = $request->request->all();
-            $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
-
-            return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
-        }
-
         if ($type) {
             switch ($type) {
-                case 'testset':
-                    $people = $digispoofService->testSet();
-                    break;
                 case 'brp':
                     $people = $digispoofService->getFromBRP();
                     break;
@@ -80,6 +65,17 @@ class DefaultController extends AbstractController
         }
 
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token];
+    }
+
+    /**
+     * @Route("/", methods={"POST"})
+     */
+    public function redirectAction(Request $request, DigiDMockService $digiDMockService)
+    {
+        $result = $request->request->all();
+        $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
+
+        return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
     }
 
     /**
