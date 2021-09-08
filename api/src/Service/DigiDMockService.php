@@ -462,9 +462,9 @@ class DigiDMockService
         return [
             '@protocolSupportEnumeration'   => 'urn:oasis:names:tc:SAML:2.0:protocol',
             'md:KeyDescriptor'              => ['@protocolSupportEnumeration'   => 'urn:oasis:names:tc:SAML:2.0:protocol',
-                    $this->getKeyDescriptor('signing'),
-                    $this->getKeyDescriptor('encryption'),
-                ],
+                $this->getKeyDescriptor('signing'),
+                $this->getKeyDescriptor('encryption'),
+            ],
             'md:ArtifactResolutionService'  => $this->getArtifactResolutionService(),
             'md:SingleLogoutService'        => $this->getSingleLogoutService(),
             'md:SingleSignOnService'        => $this->getSingleSignOnService(),
