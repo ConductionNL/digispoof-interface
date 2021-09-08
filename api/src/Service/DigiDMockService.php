@@ -414,7 +414,6 @@ class DigiDMockService
     public function getKeyDescriptor(string $use): array
     {
         return [
-            'md:KeyDescriptor'              => [
                 '@use'          => $use,
                 'ds:KeyInfo'    => [
                     'ds:KeyName'    => '399b859d-09a8-4d58-8306-5d8aface04dd',
@@ -422,7 +421,6 @@ class DigiDMockService
                         'ds:X509Certificate'    => str_replace(["-----BEGIN CERTIFICATE-----\n", "\n-----END CERTIFICATE-----"], '', $this->parameterBag->get('app_x509_cert')),
                     ],
                 ],
-            ],
         ];
     }
 
@@ -461,7 +459,7 @@ class DigiDMockService
     {
         return [
             '@protocolSupportEnumeration'   => 'urn:oasis:names:tc:SAML:2.0:protocol',
-            'md:KeyDescriptor'              => ['@protocolSupportEnumeration'   => 'urn:oasis:names:tc:SAML:2.0:protocol',
+            'md:KeyDescriptor'              => [
                 $this->getKeyDescriptor('signing'),
                 $this->getKeyDescriptor('encryption'),
             ],
