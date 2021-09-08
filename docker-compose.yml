@@ -22,6 +22,7 @@ services:
     volumes:
       - ./api:/srv/api:rw,cached
       - ./nlx-setup:/cert:rw,cached
+      - ./api/var/certs:/var/certs:rw,cached
       #- ./nlx-setup:/Users/<your-username>/nlx-setup:rw,cached
       # If you develop on Linux, uncomment the following line to use a bind-mounted host directory instead
       # - ./api/var:/srv/api/var:rw
@@ -69,6 +70,8 @@ services:
       - NOTIFICATION_ENABLED=${NOTIFICATION_ENABLED}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - APP_CERT=${APP_CERT}
+      - APP_KEY=${APP_KEY}
     ports:
       - "82:80"
 
