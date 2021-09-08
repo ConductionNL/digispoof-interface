@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use App\Exception\DigiDException;
+use OneLogin\Saml2\Utils;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Cache\Adapter\AdapterInterface as CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
@@ -14,17 +16,37 @@ class DigiDMockService
 {
     private XmlEncoder $xmlEncoder;
     private ParameterBagInterface $parameterBag;
+    private FlashBagInterface $flashBag;
     private CacheInterface $cache;
+    private ApplicationService $applicationService;
 
-    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache)
+    public function __construct(ParameterBagInterface $parameterBag, CacheInterface $cache, FlashBagInterface $flashBag, ApplicationService $applicationService)
     {
         $this->xmlEncoder = new XmlEncoder([]);
         $this->parameterBag = $parameterBag;
         $this->cache = $cache;
+        $this->flashBag = $flashBag;
+        $this->applicationService = $applicationService;
     }
 
-    public function verifySignature(string $certificate, string $parameters): array
+    public function verifySignature(array $data, string $parameters): array
     {
+        if (!isset($data['saml:Issuer'])) {
+            return [new DigiDException('The element \'saml:Issuer\' is missing in your SAML Request')];
+        }
+
+        $application = $this->applicationService->findApplicationByEntityId($data['saml:Issuer']);
+        if (!$application) {
+            return [new DigiDException("There is no application registered with the enitityId: {$data['saml:Issuer']}")];
+        }
+
+        $message = substr($parameters, strpos($parameters, 'SAMLRequest'), strpos($parameters, '&Signature=') - strpos($parameters, 'SAMLRequest'));
+        $signature = explode('&', substr($parameters, strpos($parameters, 'Signature=') + strlen('Signature=')))[0];
+
+        if (!openssl_verify($message, base64_decode(rawurldecode($signature)), openssl_pkey_get_public($application->getCertificate()), 'sha256WithRSAEncryption')) {
+            return [new DigiDException('The request signature could not be verified')];
+        }
+
         return [];
     }
 
@@ -221,7 +243,7 @@ class DigiDMockService
      */
     public function verifyRequest(array $data, string $parameters): array
     {
-        return array_merge($this->verifyXml($data), $this->verifySignature('', $parameters));
+        return array_merge($this->verifyXml($data), $this->verifySignature($data, $parameters));
     }
 
     public function getSamlRequest(Request $request): array
@@ -245,6 +267,22 @@ class DigiDMockService
         return $hash;
     }
 
+    public function getRelevantSamlData(array $samlRequest): array
+    {
+        $saml = [
+            'issuer'                   => $samlRequest['saml:Issuer'],
+            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
+            'providerName'             => $samlRequest['ProviderName'] ?? null,
+        ];
+        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
+            $saml['endpoint'] = $saml['assertionConsumerService'];
+        } else {
+            //handle Assertion
+        }
+
+        return $saml;
+    }
+
     /**
      * @param Request $request
      *
@@ -252,23 +290,14 @@ class DigiDMockService
      */
     public function handle(Request $request): array
     {
-        $errors = [];
         $samlRequest = $this->getSamlRequest($request);
         if ($request->query->has('validatedigid') && $request->query->get('validatedigid') == 'true') {
-            $errors = $this->verifyRequest($samlRequest, $request->getQueryString());
+            $errors = $this->verifyRequest($samlRequest, explode('?', $request->getRequestUri())[1]);
+            foreach ($errors as $error) {
+                $this->flashBag->add('warning', $error->getMessage());
+            }
         }
-
-        $saml = [
-            'issuer'                   => $samlRequest['saml:Issuer'],
-            'assertionConsumerService' => $samlRequest['@AssertionConsumerServiceURL'],
-            'providerName'             => $samlRequest['ProviderName'] ?? null,
-            'errors'                   => $errors,
-        ];
-        if (filter_var($saml['assertionConsumerService'], FILTER_VALIDATE_URL)) {
-            $saml['endpoint'] = $saml['assertionConsumerService'];
-        } else {
-            //handle Assertion
-        }
+        $saml = $this->getRelevantSamlData($samlRequest);
 
         return $saml;
     }
@@ -361,5 +390,100 @@ class DigiDMockService
         }
 
         return $this->retrieveFromCache($array['soapenv:Body']['samlp:ArtifactResolve']['samlp:Artifact']);
+    }
+
+    public function getReferences(): array
+    {
+        return [
+            '@URI'  => '#625cd944-20cf-4296-aafc-d74ea2c40542',
+
+        ];
+    }
+
+    public function getSignature(): array
+    {
+        return [
+            'SignedInfo'    => [
+                'CanonicalizationMethod'    => ['@Algorithm' => 'http://www.w3.org/2001/10/xml-exc-c14n#'],
+                'SignatureMethod'           => ['@Algorithm' => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'],
+                'ds:Reference'              => $this->getReferences(),
+            ],
+        ];
+    }
+
+    public function getKeyDescriptor(string $use): array
+    {
+        return [
+            'md:KeyDescriptor'              => [
+                '@use'          => $use,
+                'ds:KeyInfo'    => [
+                    'ds:KeyName'    => '399b859d-09a8-4d58-8306-5d8aface04dd',
+                    'ds:X509Data'   => [
+                        'ds:X509Certificate'    => str_replace(["-----BEGIN CERTIFICATE-----\n", "\n-----END CERTIFICATE-----"], '', $this->parameterBag->get('app_x509_cert')),
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function getArtifactResolutionService(): array
+    {
+        return [
+            '@Binding'   => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
+            '@Location'  => $this->parameterBag->get('app_url').'/artifact',
+            '@index'     => '0',
+        ];
+    }
+
+    public function getSingleLogoutService(): array
+    {
+        return [
+            '@Binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+            '@Location' => $this->parameterBag->get('app_url').'/logout',
+        ];
+    }
+
+    public function getSingleSignOnService(): array
+    {
+        return [
+            [
+                '@Binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+                '@Location' => $this->parameterBag->get('app_url'),
+            ],
+            [
+                '@Binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+                '@Location' => $this->parameterBag->get('app_url'),
+            ],
+        ];
+    }
+
+    public function getIdpSsoDescriptor(): array
+    {
+        return [
+            '@protocolSupportEnumeration'   => 'urn:oasis:names:tc:SAML:2.0:protocol',
+            'md:KeyDescriptor'              => ['@protocolSupportEnumeration'   => 'urn:oasis:names:tc:SAML:2.0:protocol',
+                $this->getKeyDescriptor('signing'),
+                $this->getKeyDescriptor('encryption'),
+            ],
+            'md:ArtifactResolutionService'  => $this->getArtifactResolutionService(),
+            'md:SingleLogoutService'        => $this->getSingleLogoutService(),
+            'md:SingleSignOnService'        => $this->getSingleSignOnService(),
+
+        ];
+    }
+
+    public function generateMetadataFile(): string
+    {
+        $data = [
+            '@xmlns:md'           => 'urn:oasis:names:tc:SAML:2.0:metadata',
+            '@xmlns:ds'           => 'http://www.w3.org/2000/09/xmldsig#',
+            '@xmlns:ec'           => 'http://www.w3.org/2001/10/xml-exc-c14n#',
+            '@ID'                 => '625cd944-20cf-4296-aafc-d74ea2c40542',
+            '@entityId'           => $this->parameterBag->get('app_url').'/saml/metadata',
+            'md:IDPSSODescriptor' => $this->getIdpSsoDescriptor(),
+        ];
+        $xml = $this->xmlEncoder->encode($data, 'xml', ['xml_root_node_name' => 'md:EntityDescriptor']);
+
+        return Utils::addSign($xml, $this->parameterBag->get('app_rsa_key'), $this->parameterBag->get('app_x509_cert'));
     }
 }

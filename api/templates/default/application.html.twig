@@ -1,0 +1,45 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="content-background">
+            	<div class="content">
+                            <h2>Een applicatie aanmelden</h2>
+                            <form action="{{ path('app_default_application') }}" method="post">
+                                <div class="input">
+                                    <label class="input__label required" for="name">Naam *</label>
+                                    <input type="text" maxlength="255" name="name" id="name" required>
+                                    <label class="input__label required" for="entityId">Entity ID *</label>
+                                    <input type="text" maxlength="255" name="entityId" id="entityId" required>
+                                    <label class="input__label required" for="emailAddress">Email adres *</label>
+                                    <input type="text" maxlength="255" name="emailAddress" id="emailAddress" required>
+                                    <label class="input__label" for="certificate">Certificaat</label>
+                                    <textarea name="certificate" id="certificate"></textarea>
+                                </div>
+                                <button class="btn" type="submit">Aanmelden</button>
+                            </form>
+
+                </div><!-- /.content -->
+            </div><!-- /.content-background -->
+        </div><!-- /.col -->
+
+        <div class="col-md-4">
+
+            <div class="content-background" >
+            	<div class="content">
+            		<h2>Over dit formulier</h2>
+					<p>Met dit formulier kunt u een applicatie aanmelden voor deze instantie van DigiSpoof.</p>
+					<p>Door uw applicatie hier aan te melden en het aangemelde, of gegenereerde, certificaat te gebruiken in uw applicatie kan de digispoof de signature controleren die uw applicatie meegeeft naar de applicatie.</p>
+                    <p>U kunt desgewenst zelf een certificaat doorgeven aan de applicatie. Indien u de private key van dit certificaat kwijt bent zult u in dat geval een nieuw certificaat moeten opgeven.</p>
+                </div><!-- /.content -->
+            </div><!-- /.content-background -->
+        </div><!-- /.col -->
+	</div><!-- /.row -->
+
+
+{% endblock %}
+

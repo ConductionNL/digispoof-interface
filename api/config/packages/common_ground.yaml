@@ -59,6 +59,15 @@ parameters:
     env(APP_EHERKENNING_LOCATION): "https://zuid-drecht.nl/eherkenning"
     env(BADGES): ""
 
+    env(APP_CERT): /var/certs/digid.crt
+    env(APP_KEY): /var/certs/digid.key
+
+    app_cert: "%env(APP_CERT)%"
+    app_key: "%env(APP_KEY)%"
+
+    app_x509_cert: "%env(file:APP_CERT)%"
+    app_rsa_key: "%env(file:APP_KEY)%"
+
     app_env: "%env(APP_ENV)%"
     app_container: "%env(APP_CONTAINER)%"
     app_debug: "%env(APP_DEBUG)%"
