@@ -25,7 +25,7 @@
                         {% endif %}
                             <hr style="width: 200px">
                             <h2>Kies een persona</h2>
-                            <form action="{{ path('app_default_index') }}" method="post">
+                            <form action="{{ path('app_default_index', {'RelayState': app.request.query.get('RelayState')}) }}" method="post">
                                 <div class="input">
                                     <label class="input__label" for="color">Persoon</label>
                                     <select id="bsn" name="bsn" class="input__control input__control--m input__control--select ">
