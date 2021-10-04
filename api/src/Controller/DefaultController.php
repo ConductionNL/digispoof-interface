@@ -68,8 +68,11 @@ class DefaultController extends AbstractController
     {
         $result = $request->request->all();
         $artifact = $digiDMockService->saveBsnToCache($result['bsn']);
-
-        return $this->redirect($result['endpoint']."?SAMLart=${artifact}");
+        $returnUrl = $result['endpoint']."?SAMLart=${artifact}";
+        if($request->query->has('RelayState')){
+            $returnUrl = $returnUrl . "&RelayState={$request->query->get('RelayState')}";
+        }
+        return $this->redirect($returnUrl);
 
         //        if ($request->isMethod('POST') && $request->getContentType() == 'xml') {
 //            $saml = $digispoofService->handlePostBinding($request->getContent());
