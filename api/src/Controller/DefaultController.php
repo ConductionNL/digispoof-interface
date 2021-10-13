@@ -42,12 +42,6 @@ class DefaultController extends AbstractController
         //responce is deprecated but still used in some applications so we still support it.
         $responseUrl = $request->query->get('responseUrl', $request->query->get('responceUrl'));
 
-        if ($request->query->has('SAMLRequest')) {
-            $saml = $digiDMockService->handle($request);
-            $people = $digispoofService->testSet();
-
-            return ['people' => $people, 'type' => 'saml', 'saml' => $saml, 'currentPath' => $this->generateUrl('app_default_index')];
-        }
 
         switch ($type) {
             case 'brp':
@@ -56,6 +50,12 @@ class DefaultController extends AbstractController
             default:
                 $people = $digispoofService->testSet();
                 break;
+        }
+
+        if ($request->query->has('SAMLRequest')) {
+            $saml = $digiDMockService->handle($request);
+
+            return ['people' => $people, 'type' => 'saml', 'saml' => $saml, 'currentPath' => $this->generateUrl('app_default_index')];
         }
 
         return ['people'=>$people, 'responseUrl' => $responseUrl, 'backUrl' => $backUrl, 'token' => $token, 'currentPath' => $this->generateUrl('app_default_index')];
