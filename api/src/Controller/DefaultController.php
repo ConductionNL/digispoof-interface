@@ -49,6 +49,7 @@ class DefaultController extends AbstractController
                 break;
             case 's-hertogenbosch':
                 $people = $digispoofService->testSetHt();
+                break;
             default:
                 $people = $digispoofService->testSet();
                 break;
