@@ -47,6 +47,8 @@ class DefaultController extends AbstractController
             case 'brp':
                 $people = $digispoofService->getFromBRP();
                 break;
+            case 's-hertogenbosch':
+                $people = $digispoofService->testSetHt();
             default:
                 $people = $digispoofService->testSet();
                 break;

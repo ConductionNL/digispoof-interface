@@ -30,6 +30,164 @@ class DigispoofService
         return $this->commonGroundService->getResourceList(['component'=>'brp', 'type'=>'ingeschrevenpersonen'])['hydra:member'];
     }
 
+    public function testSetHt(): array
+    {
+        return [
+            [
+                'burgerservicenummer'   => '999999102',
+                'naam'                  => [
+                    'voornamen'             => 'Jeroen',
+                    'geslachtsnaam'         => 'Oranje',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999114',
+                'naam'                  => [
+                    'voornamen'             => 'Yvonne',
+                    'geslachtsnaam'         => 'Rood',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999126',
+                'naam'                  => [
+                    'voornamen'             => 'Stan',
+                    'geslachtsnaam'         => 'Oranje',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999138',
+                'naam'                  => [
+                    'voornamen'             => 'Tim',
+                    'geslachtsnaam'         => 'Oranje',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999151',
+                'naam'                  => [
+                    'voornamen'             => 'Luuk',
+                    'geslachtsnaam'         => 'Oranje',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999163',
+                'naam'                  => [
+                    'voornamen'             => 'Wim',
+                    'geslachtsnaam'         => 'Fris',
+                ],
+            ],            [
+                'burgerservicenummer'   => '999999011',
+                'naam'                  => [
+                    'voornamen'             => 'Angeline',
+                    'geslachtsnaam'         => 'Warm',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999175',
+                'naam'                  => [
+                    'voornamen'             => 'Renate',
+                    'geslachtsnaam'         => 'Fris',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999060',
+                'naam'                  => [
+                    'voornamen'             => 'Leon',
+                    'geslachtsnaam'         => 'Giraf',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999187',
+                'naam'                  => [
+                    'voornamen'             => 'Tobias',
+                    'geslachtsnaam'         => 'Reus',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999199',
+                'naam'                  => [
+                    'voornamen'             => 'Ton',
+                    'geslachtsnaam'         => 'Reus',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999999205',
+                'naam'                  => [
+                    'voornamen'             => 'Inge',
+                    'geslachtsnaam'         => 'Links',
+                ],
+            ],            [
+                'burgerservicenummer'   => '999999217',
+                'naam'                  => [
+                    'voornamen'             => 'Erik',
+                    'geslachtsnaam'         => 'Rechts',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999993653',
+                'naam'                  => [
+                    'voornamen'             => 'Suzanne',
+                    'geslachtsnaam'         => 'van der Stappen',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999990639',
+                'naam'                  => [
+                    'voornamen'             => 'Mattheus',
+                    'geslachtsnaam'         => 'du Burck',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999993872',
+                'naam'                  => [
+                    'voornamen'             => 'Peter-Jan',
+                    'geslachtsnaam'         => 'van der Meijden',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999992740',
+                'naam'                  => [
+                    'voornamen'             => 'Jael',
+                    'geslachtsnaam'         => 'de Jager',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999991723',
+                'naam'                  => [
+                    'voornamen'             => 'Lukas',
+                    'geslachtsnaam'         => 'Klamer',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999990317',
+                'naam'                  => [
+                    'voornamen'             => 'Nasier',
+                    'geslachtsnaam'         => 'Boeddhoe',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999993793',
+                'naam'                  => [
+                    'voornamen'             => 'Rodney',
+                    'geslachtsnaam'         => 'Plieger',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999990561',
+                'naam'                  => [
+                    'voornamen'             => 'Thomas',
+                    'geslachtsnaam'         => 'Thuisloos',
+                ],
+            ],
+            [
+                'burgerservicenummer'   => '999998870',
+                'naam'                  => [
+                    'voornamen'             => 'Marjolein',
+                    'geslachtsnaam'         => 'Thuisloos',
+                ],
+            ],
+        ];
+    }
+
     /**
      * This function generates a test data set with test people from vrijBRP.
      *
