@@ -338,7 +338,7 @@ class DigiDMockService
                                     '@Method'                      => 'urn:oasis:names:tc:SAML:2.0:cm:bearer',
                                     'saml:SubjectConfirmationData' => [
                                         '@InResponseTo' => $artifact,
-                                        '@Recipient'    => 'https://digispoof.demodam.nl/artifact',
+                                        '@Recipient'    => rtrim($this->parameterBag->get('app_url'), '/').'/artifact',
                                         '@NotOnOrAfter' => date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +2 minutes')),
                                     ],
                                 ],
